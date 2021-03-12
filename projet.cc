@@ -24,6 +24,20 @@ int main(int argc, char* argv[])
 			}else{
 				bad_argc();
 			}
+			break;
+		case 2:
+			if (argc == 5){
+				double init_max (stod(argv[2], &nb));
+				setMax(init_max);
+				double x_init (stod(argv[3], &nb));
+				double y_init (stod(argv[4], &nb));
+				point p({x_init, y_init});
+				coord_norm(p);
+				print_point(x_init, y_init, p.x, p.y);
+			}else{
+				bad_argc();
+			}
+			break;
 	}
 	
 	return 0;
