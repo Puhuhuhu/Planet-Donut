@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 				setMax(init_max);
 				double x_init (stod(argv[3], &nb));
 				double y_init (stod(argv[4], &nb));
-				point p({x_init, y_init});
+				Point p({x_init, y_init});
 				coord_norm(p);
 				print_point(x_init, y_init, p.x, p.y);
 			}else{

@@ -1,7 +1,7 @@
 #ifndef GEOMOD_H
 #define GEOMOD_H
 
-struct point
+struct Point
 {
 	double x;
 	double y;
@@ -18,7 +18,7 @@ double getEpsilon();
 
 void coord_norm(double &val);
 
-void coord_norm(point &p);
+void coord_norm(Point &p);
 
 #endif
 

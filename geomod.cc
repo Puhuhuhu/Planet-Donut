@@ -37,7 +37,7 @@ void coord_norm(double &val)
 	if (val < -max){val = val+2*max;}
 }
 
-void coord_norm(point &p)
+void coord_norm(Point &p)
 {
 	if ((p.x) > max){p.x = p.x-2*max;}
 	if ((p.x) < -max){p.x = p.x+2*max;}
