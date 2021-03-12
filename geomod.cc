@@ -31,11 +31,10 @@ double getEpsilon()
 	return epsilon_zero;
 }
 
-double coord_norm(double val)
+void coord_norm(double &val)
 {
 	if (val > max){val = val-2*max;}
-	if (val < max){val = val+2*max;}
-	return val;
+	if (val < -max){val = val+2*max;}
 }
 
 void coord_norm(point &p)

@@ -13,6 +13,8 @@ double getMax();
 
 double getEpsilon();
 
+void coord_norm(double &val);
+
 void coord_norm(point &p);
 
 
