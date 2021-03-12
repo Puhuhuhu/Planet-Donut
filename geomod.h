@@ -1,3 +1,6 @@
+#ifndef GEOMOD_H
+#define GEOMOD_H
+
 struct point
 {
 	double x;
@@ -17,6 +20,7 @@ void coord_norm(double &val);
 
 void coord_norm(point &p);
 
+#endif
 
 
 
