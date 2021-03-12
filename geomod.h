@@ -7,3 +7,5 @@ double getMax();
 
 double getEpsilon();
 
+
+
