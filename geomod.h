@@ -20,6 +20,9 @@ void coord_norm(double &val);
 
 void coord_norm(Point &p);
 
+void distanceAB(Point &A, Point &B);
+
+
 #endif
 
 
