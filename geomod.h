@@ -7,6 +7,12 @@ struct Point
 	double y;
 };
 
+struct Vect
+{
+	double norme;
+	double x;
+	double y;
+};
 
 bool equal_zero(double epsilon_zero, double val);
 
@@ -20,7 +26,9 @@ void coord_norm(double &val);
 
 void coord_norm(Point &p);
 
-void distanceAB(Point &A, Point &B);
+Vect distanceAB(Point &A, Point &B);
+
+bool egalite(Point &p1, Point &p2);
 
 
 #endif

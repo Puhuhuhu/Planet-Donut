@@ -8,7 +8,7 @@ static double max(0);
 
 bool equal_zero(double val)
 {
-	if (abs(val) < epsilon_zero){
+	if (sqrt(pow(val, 2)) < epsilon_zero){
 		return true;
 	}else{
 		return false;
@@ -45,6 +45,35 @@ void coord_norm(Point &p)
 	if ((p.y) < -max){p.y = p.y+2*max;}
 }
 
+Vect distanceAB(Point &A, Point &B)
+{
+	coord_norm(A);
+	double petit_norm(2*getMax()), petit_x, petit_y;
+	for(int k = -1; k < 2; k++){
+		//faire varier la position de B selon x
+		double B_plan_x = B.x + k * 2* getMax();
+		double distanceX(B_plan_x - A.x);
+		for(int j = -1; j < 2; j++){
+			//faire varier la position de B selon y
+			double B_plan_y = B.y + j * 2*getMax();
+			double distanceY(B_plan_y - A.y);
+			double norm( sqrt( distanceX * distanceX + distanceY  * distanceY));
+			if(norm < petit_norm){
+					petit_norm = norm;
+					petit_x = distanceX;
+					petit_y = distanceY;
+			}
+		}
+	}
+	Vect v({petit_norm, petit_x, petit_y});
+	return v;
+}
+
+bool egalite(Point &p1, Point &p2)
+{
+	Vect v(distanceAB(p1, p2));
+	return equal_zero(v.norme);
+}
 
 
 
