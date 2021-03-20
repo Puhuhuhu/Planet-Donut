@@ -75,6 +75,24 @@ bool egalite(Point &p1, Point &p2)
 	return equal_zero(v.norme);
 }
 
+bool point_cercle(Point &p, Cercle &c)
+{
+	Vect v (distanceAB(p, c.centre));
+	if (v.norme < (c.rayon)-epsilon_zero) {return true;}
+	else {return false;}
+}
+
+bool cercle_cercle(Cercle &c1, Cercle &c2)
+{
+	Vect v(distanceAB(c1.centre, c2.centre));
+	if (v.norme < ((c1.rayon + c2.rayon)-epsilon_zero)){
+		return true;
+	}else{ 
+		return false;
+	}
+}
+	
+
 
 
 
