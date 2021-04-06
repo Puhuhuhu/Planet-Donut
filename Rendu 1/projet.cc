@@ -80,7 +80,8 @@ int main(int argc, char* argv[])
 				Point centre({xc_init, yc_init});
 				coord_norm(centre);
 				Cercle c ({r, centre});
-				print_include_point(point_cercle(p, c), x_init, y_init, xc_init, yc_init, r);
+				print_include_point(point_cercle(p, c), x_init, y_init, 
+				                    xc_init, yc_init, r);
 			}else{
 				bad_argc();
 			}
@@ -98,7 +99,8 @@ int main(int argc, char* argv[])
 				Point centre2 ({xc2_init, yc2_init});
 				Cercle c1 ({r1_init, centre1});
 				Cercle c2 ({r2_init, centre2});
-				print_intersect(cercle_cercle(c1, c2), c1.centre.x, c1.centre.y, c1.rayon, c2.centre.x, c2.centre.y, c2.rayon);
+				print_intersect(cercle_cercle(c1, c2), c1.centre.x, c1.centre.y, 
+				                c1.rayon, c2.centre.x, c2.centre.y, c2.rayon);
 			}else{
 				bad_argc();
 			}
