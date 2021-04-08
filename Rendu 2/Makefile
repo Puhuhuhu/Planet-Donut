@@ -28,10 +28,11 @@ clean:
 # -- Regles de dependances generees automatiquement
 #
 # DO NOT DELETE THIS LINE
-projet.o: projet.cc simulation.h
+projet.o: projet.cc simulation.h constantes.h
 geomod.o: geomod.cc geomod.h
-gisement.o: gisement.cc gisement.h message.h geomod.h
-robot.o: robot.cc robot.h gisement.h message.h geomod.h
-simulation.o: simulation.cc simulation.h base.h gisement.h geomod.h
-base.o: base.cc base.h robot.h gisement.h message.h geomod.h
+gisement.o: gisement.cc gisement.h message.h geomod.h constantes.h
+robot.o: robot.cc robot.h gisement.h message.h geomod.h constantes.h
+simulation.o: simulation.cc simulation.h base.h gisement.h geomod.h \
+ constantes.h
+base.o: base.cc base.h robot.h gisement.h message.h geomod.h constantes.h
 message.o: message.cc message.h
