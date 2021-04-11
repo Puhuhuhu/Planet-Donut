@@ -19,17 +19,18 @@ void Simulation::lecture(char* nom_config)
 	if (!config.fail()){
 		while (getline(config >> ws, line)){
 			if (line[0]=='#'){continue;}
-			decodage(line);
+			decodage(line, config);
 		}
 	}else{exit(0);}
 }
 
 
 
-void Simulation::decodage(string line)
+void Simulation::decodage(string line, ifstream& config)
 {
+	//Automate de lecture
 	istringstream data(line);
-	enum etat_lecture{NB0=0, G=1, NB1, B, FIN};
+	enum etat_lecture{NB0=1, G=2, NB1=3, B=4, FIN=5};
 	static int etat(NB0);
 	static int total;
 	static int i;
@@ -39,7 +40,7 @@ void Simulation::decodage(string line)
 			if(!(data >> total)) exit(0);
 			else {i=0;}
 			if (total == 0) {etat = NB1; nbG = 0;}
-			else {etat = G;}
+			else {etat = G; nbG = total;}
 			break;
 			
 		case G :
@@ -52,13 +53,13 @@ void Simulation::decodage(string line)
 			if(!(data >> total)) exit(0);
 			else {i=0;}
 			if (total == 0) {etat = FIN; nbB=0;}
-			else {etat = B;}
+			else {etat = B; nbB = total;}
 			break;
 			
 		case B :
 			++i;
 			if (i == total) {etat = FIN;}
-			lecture_base(line);
+			lecture_base(line, config);
 			break;
 			
 		case FIN :

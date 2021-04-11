@@ -32,7 +32,7 @@ void creer_gisement(double x, double y, double rayon, double capacite)
 	and (capacite <= 1000*(rayon/rayon_min)*(rayon/rayon_min))){
 		coord_norm(x);
 		coord_norm(y);
-		Gisement g(x, y, rayon, capacite);
+		Gisement g(x, y, rayon, capacite);  //Creation du gisement
 		g.intersection(); //Verification des possibles intersections
 		Eg.push_back(g);  //ajout du gisement dans l'ensemble Eg
 	}else{exit(0);}	
