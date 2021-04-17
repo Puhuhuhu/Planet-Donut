@@ -113,7 +113,7 @@ void Base::intersection(){
 		//test d'intersection
 		if(cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message::base_superposition(centre.x, centre.y, 
-			centre2.x, centre2.y) << endl;
+			centre2.x, centre2.y);
 			exit(0); //quitte le programme si il y a une intersection
 		}
 	}
@@ -124,7 +124,7 @@ void Base::test_uid()
 	for (size_t i(0); i<Er.size(); ++i){
 		for(size_t j(i+1) ; j<Er.size(); ++j){
 			if(Er[i]->get_uid() == Er[j]->get_uid()){
-				cout << message::identical_robot_uid(Er[i]->get_uid()) << endl;
+				cout << message::identical_robot_uid(Er[i]->get_uid());
 				exit(0);
 			}
 		}
@@ -141,7 +141,7 @@ void Base::test_robocom(){
 		}
 	}
 	if(!robocom){
-		cout << message::missing_robot_communication(centre.x, centre.y) << endl;
+		cout << message::missing_robot_communication(centre.x, centre.y);
 		exit(0);
 	}
 }

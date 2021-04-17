@@ -3,6 +3,7 @@
 #include "gisement.h"
 #include "geomod.h"
 #include "constantes.h"
+#include "message.h"
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -30,7 +31,7 @@ void Simulation::decodage(string line, ifstream& config)
 {
 	//Automate de lecture
 	istringstream data(line);
-	enum etat_lecture{NB0=1, G=2, NB1=3, B=4, FIN=5};
+	enum etat_lecture{NB0, G, NB1, B};
 	static int etat(NB0);
 	static int total;
 	static int i;
@@ -52,17 +53,14 @@ void Simulation::decodage(string line, ifstream& config)
 		case NB1 :
 			if(!(data >> total)) exit(0);
 			else {i=0;}
-			if (total == 0) {etat = FIN; nbB=0;}
+			if (total == 0) {nbB=0;}
 			else {etat = B; nbB = total;}
 			break;
 			
 		case B :
 			++i;
-			if (i == total) {etat = FIN;}
 			lecture_base(line, config);
-			break;
-			
-		case FIN :
+			if (i==total) {cout << message::success();}
 			break;
 	}
 }	

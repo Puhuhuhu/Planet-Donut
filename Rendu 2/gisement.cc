@@ -45,7 +45,7 @@ void intersection_base_gisement(Point centre, double rayon){
 		double rayon2(Eg[i].get_rayon());
 		if (cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message ::base_field_superposition(centre.x, centre.y,
-			centre2.x, centre2.y) << endl;
+			centre2.x, centre2.y);
 			exit(0);
 		}
 	}
@@ -61,7 +61,7 @@ void Gisement::intersection(){
 		//test d'intersection
 		if(cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message::field_superposition(centre.x, centre.y, 
-			centre2.x, centre2.y) << endl;
+			centre2.x, centre2.y);
 			exit(0); //quitte le programme si il y a une intersection
 		}
 	}

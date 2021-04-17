@@ -20,7 +20,7 @@ RobotP creer_robotP(string line)
 	bool atteint, retour, found;
 	if (!(data >> uid >> dp >> x >> y >> xb >> yb >> 
 	      atteintst >> retourst >> foundst)){
-		cout << "erreur robotp" << endl; exit (0);
+		exit (0);
 	}else{
 		if (foundst == "false"){
 			found = false;
@@ -29,7 +29,7 @@ RobotP creer_robotP(string line)
 		}
 		if (foundst ==" true"){
 			if(!(data >> xg >> yg >> rayong >> capaciteg)){
-				cout << "erreur robotp" << endl; exit(0);
+				exit(0);
 			}else{
 				found = true;
 				if (retourst == "true") {retour = true;}
