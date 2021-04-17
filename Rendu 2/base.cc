@@ -35,14 +35,16 @@ void creer_base(double x, double y, double ressources, int nbP, int nbF, int nbT
 	coord_norm(x);
 	coord_norm(y);
 	Base b(x, y, ressources, nbP, nbF, nbT, nbC);  // Creation de la base
-	b.intersection();  //test d'intersection
-	b.intersection_base_gisement(b.centre, b.rayon);
+	b.intersection();  //tests d'intersection
+	intersection_base_gisement(b.get_centre(), b.get_rayon());
 	Eb.push_back(b);   //ajout dans l'ensemble Eb
 	string line;
 	b.decodage_robotP(nbP, config);
 	b.decodage_robotF(nbF, config);
-	b.decodage_robotT(nbC, config);
-	b.decodage_robotC(nbT, config);
+	b.decodage_robotT(nbT, config);
+	b.decodage_robotC(nbC, config);
+	b.test_uid();
+	b.test_robocom();
 }
 
 
@@ -55,7 +57,8 @@ void Base::decodage_robotP(int nbP, ifstream &config)
 	while (i<nbP){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		lecture_robotP(line);
+		ErP.push_back(new RobotP(creer_robotP(line)));
+		Er.push_back(ErP.back());
 		++i;
 	}
 }
@@ -67,7 +70,8 @@ void Base::decodage_robotF(int nbF, ifstream &config)
 	while (i<nbF){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		lecture_robotF(line);
+		ErF.push_back(new RobotF(creer_robotF(line)));
+		Er.push_back(ErF.back());
 		++i;
 	}
 }
@@ -79,7 +83,8 @@ void Base::decodage_robotT(int nbT, ifstream &config)
 	while (i<nbT){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		lecture_robotT(line);
+		ErT.push_back(new RobotT(creer_robotT(line)));
+		Er.push_back(ErT.back());
 		++i;
 	}
 }
@@ -91,7 +96,9 @@ void Base::decodage_robotC(int nbC, ifstream &config)
 	while (i<nbC){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		lecture_robotC(line);
+		ErC.push_back(new RobotC(creer_robotC(line)));
+		Er.push_back(ErC.back());
+		
 		++i;
 	}
 }
@@ -112,7 +119,34 @@ void Base::intersection(){
 	}
 }
 
+void Base::test_uid()
+{
+	for (size_t i(0); i<Er.size(); ++i){
+		for(size_t j(i+1) ; j<Er.size(); ++j){
+			if(Er[i]->get_uid() == Er[j]->get_uid()){
+				cout << message::identical_robot_uid(Er[i]->get_uid()) << endl;
+				exit(0);
+			}
+		}
+	}
+}
+			
 
+void Base::test_robocom(){
+	bool robocom(false);
+	for(size_t i(0); i<ErC.size(); ++i){
+		Point centre2(ErC[i]->get_position());
+		if (egalite(centre, centre2)){
+			robocom = true;
+		}
+	}
+	if(!robocom){
+		cout << message::missing_robot_communication(centre.x, centre.y) << endl;
+		exit(0);
+	}
+}
+
+	
 //Getters
 Point Base::get_centre() {return centre;}
 
@@ -120,15 +154,11 @@ double Base::get_ressources() {return ressources;}
 
 double Base::get_rayon() {return rayon;}
 
-int Base::get_nbC() {return nbC;}
-
-int Base::get_nbF() {return nbF;}
-
-int Base::get_nbP() {return nbP;}
-
-int Base::get_nbT() {return nbT;}
-
-vector<Robot> Base::get_Er() {return Er;}
+vector<Robot*> Base::get_Er() {return Er;}
+vector<RobotP*> Base::get_ErP() {return ErP;}
+vector<RobotF*> Base::get_ErF() {return ErF;}
+vector<RobotT*> Base::get_ErT() {return ErT;}
+vector<RobotC*> Base::get_ErC() {return ErC;}
 
 
 

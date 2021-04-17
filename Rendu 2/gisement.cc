@@ -46,6 +46,7 @@ void intersection_base_gisement(Point centre, double rayon){
 		if (cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message ::base_field_superposition(centre.x, centre.y,
 			centre2.x, centre2.y) << endl;
+			exit(0);
 		}
 	}
 }
