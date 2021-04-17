@@ -39,6 +39,18 @@ void creer_gisement(double x, double y, double rayon, double capacite)
 }
 
 
+void intersection_base_gisement(Point centre, double rayon){
+	for(size_t i(0); i<Eg.size(); ++i){
+		Point centre2(Eg[i].get_centre());
+		double rayon2(Eg[i].get_rayon());
+		if (cercle_cercle(centre, rayon, centre2, rayon2)){
+			cout << message ::base_field_superposition(centre.x, centre.y,
+			centre2.x, centre2.y) << endl;
+		}
+	}
+}
+	
+
 //Methodes
 void Gisement::intersection(){
 	//parcours de l'ensemble
@@ -48,7 +60,7 @@ void Gisement::intersection(){
 		//test d'intersection
 		if(cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message::field_superposition(centre.x, centre.y, 
-			Eg[i].get_centre().x, Eg[i].get_centre().y) << endl;
+			centre2.x, centre2.y) << endl;
 			exit(0); //quitte le programme si il y a une intersection
 		}
 	}

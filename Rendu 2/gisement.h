@@ -1,6 +1,7 @@
 #ifndef GISEMENT_H
 #define GISEMENT_H
 #include <string>
+#include <vector>
 #include "geomod.h"
 
 class Gisement 
@@ -23,5 +24,7 @@ class Gisement
 void lecture_gisement (std::string line);
 
 void creer_gisement(double x, double y, double rayon, double capacite);
+
+void intersection_base_gisement(Point centre, double rayon);
 
 #endif

@@ -59,9 +59,9 @@ Vect distanceAB(Point &A, Point &B)
 			double distanceY(B_plan_y - A.y);
 			double norm( sqrt( distanceX * distanceX + distanceY  * distanceY));
 			if(norm < petit_norm){
-					petit_norm = norm;
-					petit_x = distanceX;
-					petit_y = distanceY;
+				petit_norm = norm;
+				petit_x = distanceX;
+				petit_y = distanceY;
 			}
 		}
 	}

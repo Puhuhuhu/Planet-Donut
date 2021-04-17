@@ -1,0 +1,10 @@
+# Public
+# test 01 /  gisement intersecte gisement
+# test 02 /  gisement intersecte gisement
+# test 03 /  base intersecte base
+# test 04 /  base intersecte gisement
+# test 05 /  base intersecte gisement
+# test 06 /  pas de robot de com dans une base
+# test 07 /  robot com pas au centre de sa base
+# test 08 /  robot meme uid 17
+# test 09 /  robot meme uid 1

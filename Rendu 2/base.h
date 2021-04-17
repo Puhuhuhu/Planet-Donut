@@ -30,7 +30,10 @@ class Base
 		void intersection();
 		void test_uid(std::vector<Robot> Er);
 		void test_robocom(std::vector<Robot> Er);
-		void decodage_robot(std::string line);
+		void decodage_robotP(int nbP, std::ifstream &config);
+		void decodage_robotF(int nbF, std::ifstream &config);
+		void decodage_robotT(int nbT, std::ifstream &config);
+		void decodage_robotC(int nbC, std::ifstream &config);
 };
 		
 
