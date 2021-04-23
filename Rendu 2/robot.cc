@@ -24,18 +24,22 @@ RobotP creer_robotP(string line)
 	}else{
 		if (foundst == "false"){
 			found = false;
+			if (retourst == "true") {retour = true;}
+			else {retour = false;}
+			if (atteintst =="true") {atteint = true;}
+			else {atteint = false;}
 			RobotP p(uid, dp, x, y, xb, yb, atteint, retour, found, 0, 0, 0, 0);
 			return p;
 		}
-		if (foundst ==" true"){
+		if (foundst =="true"){
+			found = true;
 			if(!(data >> xg >> yg >> rayong >> capaciteg)){
 				exit(0);
 			}else{
-				found = true;
 				if (retourst == "true") {retour = true;}
 				else {retour = false;}
-				if (foundst == "true") {found = true;}
-				else {found = false;}
+				if (atteintst =="true") {atteint = true;}
+				else {atteint = false;}
 				RobotP p(uid, dp, x, y, xb, yb, atteint, retour, 
 				         found, xg, yg, rayong, capaciteg);
 				return p;
@@ -97,13 +101,13 @@ RobotC creer_robotC(string line)
 
 Robot::Robot(int uid, double dp, double x, double y, double xb, 
              double yb, bool atteint)
-	: uid(uid), dp(dp), position({x, y}), position_base({xb, yb}), atteint(atteint) {}
+	: uid(uid), dp(dp), position({x, y}), position_but({xb, yb}), atteint(atteint) {}
 	
 RobotP::RobotP(int uid, double dp, double x, double y, double xb, 
-               double yb, bool atteint, double xg, double yg, double rayong, 
-               double capaciteg, bool retour, bool found)
+               double yb, bool atteint, bool retour, bool found,
+               double xg, double yg, double rayong, double capaciteg)
 	: Robot(uid, dp, x, y, xb, yb, atteint), position_gisement({xg, yg}), 
-	  retour(retour), found(found) {}
+	  rayong(rayong), capaciteg(capaciteg), retour(retour), found(found) {}
 
 RobotF::RobotF(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint)
@@ -122,37 +126,34 @@ RobotC::RobotC(int uid, double dp, double x, double y, double xb,
 
 int Robot::get_uid(){
     return uid;
-    }
+}
+    
+double Robot::get_dp(){
+	return dp;
+}
 
 Point Robot::get_position(){
 	return position;
-    }
+}
     
-double Robot::get_xb(){
-    return position_base.x;
-    }
-    
-double Robot::get_yb(){
-    return position_base.y;
-    }
+Point Robot::get_position_but(){
+	return position_but;
+}
     
 bool Robot::get_at(){
     return atteint;
-    }
+}
     
 bool RobotP::get_rt(){
     return retour;
-    }
+}
     
 bool RobotP::get_fd(){
     return found;
-    }
-
-double RobotP::get_xg(){
-    return position_gisement.x;
 }
-double RobotP::get_yg(){
-    return position_gisement.y;
+
+Point RobotP::get_position_gisement(){
+    return position_gisement;
 }
 
 double RobotP::get_rg(){

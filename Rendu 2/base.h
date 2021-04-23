@@ -23,6 +23,7 @@ class Base
 		
 	public :
 		Base(double x, double y, double ressources, int nbP, int nbF, int nbT,int nbC);
+		~Base();
 		Point get_centre();
 		double get_ressources();
 		double get_rayon();

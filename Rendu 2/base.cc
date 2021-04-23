@@ -6,7 +6,6 @@
 #include "constantes.h"
 #include <iostream>
 #include <vector>
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -35,10 +34,9 @@ void creer_base(double x, double y, double ressources, int nbP, int nbF, int nbT
 	coord_norm(x);
 	coord_norm(y);
 	Base b(x, y, ressources, nbP, nbF, nbT, nbC);  // Creation de la base
-	b.intersection();  //tests d'intersection
+	b.intersection();  //tests
 	intersection_base_gisement(b.get_centre(), b.get_rayon());
 	Eb.push_back(b);   //ajout dans l'ensemble Eb
-	string line;
 	b.decodage_robotP(nbP, config);
 	b.decodage_robotF(nbF, config);
 	b.decodage_robotT(nbT, config);
@@ -168,3 +166,19 @@ Base::Base(double x, double y, double ressources, int nbP, int nbF,
            : centre({x, y}), ressources(ressources), rayon(rayon_base), nbP(nbP), 
            nbF(nbF), nbT(nbT), nbC(nbC) {}
            
+ 
+//Destructeur
+Base::~Base()
+{
+	for(size_t i(0); i<Er.size(); ++i){
+		delete Er[i];
+	}
+}
+
+
+
+
+
+
+
+

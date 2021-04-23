@@ -10,14 +10,14 @@ class Robot
         int uid;
         double dp;
         Point position;
-        Point position_base;
+        Point position_but;
         bool atteint;
         
     public :
         int get_uid();
+        double get_dp();
         Point get_position();
-        double get_xb();
-        double get_yb();
+        Point get_position_but();
         bool get_at();
         Robot(int uid, double dp, double x, double y, double xb, 
               double yb, bool atteint);
@@ -32,13 +32,12 @@ class RobotP : public Robot{
     public:
         bool get_rt();
         bool get_fd();
-        double get_xg();
-        double get_yg();
+        Point get_position_gisement();
         double get_rg();
         double get_cg();
         RobotP(int uid, double dp, double x, double y, double xb, 
-               double yb, bool atteint, double xg, double yg, double rayong, 
-               double capaciteg, bool retour, bool found);
+               double yb, bool atteint, bool retour, bool found, double xg, double yg, double rayong, 
+               double capaciteg);
 };
 
 class RobotF : public Robot{
