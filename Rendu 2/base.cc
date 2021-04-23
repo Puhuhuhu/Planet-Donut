@@ -172,7 +172,20 @@ Base::~Base()
 {
 	for(size_t i(0); i<Er.size(); ++i){
 		delete Er[i];
+		Er[i] = nullptr;
 	}
+	for(size_t i(0); i<ErP.size(); ++i){
+		ErP[i] = nullptr;
+	}
+	for(size_t i(0); i<ErF.size(); ++i){
+		ErF[i] = nullptr;
+	}
+	for(size_t i(0); i<ErT.size(); ++i){
+		ErT[i] = nullptr;
+	}
+	for(size_t i(0); i<ErC.size(); ++i){
+		ErC[i] = nullptr;
+	}		
 }
 
 
