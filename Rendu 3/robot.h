@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include "geomod.h"
+#include <memory>
+#include <sstream>
 
 class Robot
 {
@@ -12,11 +14,18 @@ class Robot
         Point position;
         Point position_but;
         bool atteint;
-        std::vector <Robot*> voisin;
+        std::vector<Robot*> voisin;
+        bool visited;
+        bool connect; //false = autonomous, true = remote
         
     public :
+		void set_connect(bool c);
+		bool get_connect();
+		void set_visited(bool v);
+		bool get_visited();
         int get_uid();
         double get_dp();
+        void set_dp(double d);
         Point& get_position();
         Point get_position_but();
         bool get_at();
@@ -73,6 +82,5 @@ RobotF creer_robotF(std::string line);
 RobotT creer_robotT(std::string line);
 
 RobotC creer_robotC(std::string line);
-
 
 #endif

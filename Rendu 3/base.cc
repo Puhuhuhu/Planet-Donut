@@ -9,9 +9,10 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <memory>
 using namespace std;
 
-static vector<Base> Eb; //Ensemble Eb
+static vector<unique_ptr<Base>> Eb; //Ensemble Eb
 
 
 //Fonctions
@@ -33,32 +34,124 @@ void creer_base(double x, double y, double ressources, int nbP, int nbF, int nbT
 {
 	coord_norm(x);
 	coord_norm(y);
-	Base b(x, y, ressources, nbP, nbF, nbT, nbC);  // Creation de la base
-	b.decodage_robotP(nbP, config);
-	b.decodage_robotF(nbF, config);
-	b.decodage_robotT(nbT, config);
-	b.decodage_robotC(nbC, config);
-	Eb.push_back(b);   //ajout dans l'ensemble Eb
-	b.intersection();  //tests
-	intersection_base_gisement(b.get_centre(), b.get_rayon());
-	b.test_uid();
-	b.test_robocom();
-	b.taille_Er();
-	test_taille();
+	Eb.push_back(unique_ptr<Base>(new Base(x, y, ressources, nbP, nbF, nbT, nbC)));  // Creation de la base
+	Eb.back()->intersection();
+	Eb.back()->decodage_robotP(nbP, config);
+	Eb.back()->decodage_robotF(nbF, config);
+	Eb.back()->decodage_robotT(nbT, config);
+	Eb.back()->decodage_robotC(nbC, config);
+	intersection_base_gisement(Eb.back()->get_centre(), Eb.back()->get_rayon());
+	Eb.back()->test_uid();
+	Eb.back()->test_robocom();
 }
 
 
-void test_taille()
+void save_base(ofstream& sauvegarde)
 {
-	cout << Eb[0].get_Er().size() << endl;
+	for (size_t i(0); i<Eb.size() ; ++i){
+		sauvegarde << "    " << Eb[i]->get_centre().x << " " << Eb[i]->get_centre().y 
+		           << " " << Eb[i]->get_ressources() << " " << Eb[i]->get_nbP() << " " 
+		           << Eb[i]->get_nbF() << " " << Eb[i]->get_nbT() << " " 
+		           << Eb[i]->get_nbC() << endl;
+		save_robot(sauvegarde, i);
+	}
 }
 
-void Base::taille_Er()
+void save_robot(ofstream& sauvegarde, int j)
 {
-	cout << Er.size() << endl;
+	sauvegarde << "        # Prospector" << endl;
+	for (size_t i(0); i<Eb[j]->get_ErP().size(); ++i){
+		save_robotP(sauvegarde, j, i);
+	}
+	sauvegarde << "        # Drilling" << endl;
+	for (size_t i(0); i<Eb[j]->get_ErF().size(); ++i){
+		save_robotF(sauvegarde, j, i);
+	}
+	sauvegarde << "        # Transport" << endl;
+	for (size_t i(0); i<Eb[j]->get_ErT().size(); ++i){
+		save_robotT(sauvegarde, j, i);
+	}
+	sauvegarde << "        # Communication" << endl;
+	for (size_t i(0); i<Eb[j]->get_ErC().size(); ++i){
+		save_robotC(sauvegarde, j, i);
+	}
+}
+
+void save_robotP(ofstream& sauvegarde, int j, int i)
+{
+	string atteintst, retourst, foundst;
+	if (Eb[j]->get_ErP()[i]->get_at() == 0) {atteintst = "false";}
+	else {atteintst = "true";}
+	if (Eb[j]->get_ErP()[i]->get_rt() == 0) {retourst = "false";}
+	else {retourst = "true";}
+	if (Eb[j]->get_ErP()[i]->get_fd() == 0) {foundst = "false";}
+	else {foundst = "true";}
+	
+	sauvegarde << "        " << Eb[j]->get_ErP()[i]->get_uid() << " " 
+	           << Eb[j]->get_ErP()[i]->get_dp() << " "
+	           << Eb[j]->get_ErP()[i]->get_position().x << " " 
+	           << Eb[j]->get_ErP()[i]->get_position().y << " " 
+	           << Eb[j]->get_ErP()[i]->get_position_but().x << " "
+		       << Eb[j]->get_ErP()[i]->get_position_but().y << " " 
+		       << atteintst << " " 
+		       << retourst << " " 
+		       << foundst;
+	if (Eb[j]->get_ErP()[i]->get_fd()){
+		sauvegarde << " " << Eb[j]->get_ErP()[i]->get_position_gisement().x << " " 
+		           << Eb[j]->get_ErP()[i]->get_position_gisement().y << " " 
+		           << Eb[j]->get_ErP()[i]->get_rg()
+		           << " " << Eb[j]->get_ErP()[i]->get_cg() << endl;
+	}else{sauvegarde << endl;}
 }
 
 
+void save_robotF(ofstream& sauvegarde, int j, int i)
+{
+	string atteintst;
+	if (Eb[j]->get_ErF()[i]->get_at() == 0) {atteintst = "false";}
+	else {atteintst = "true";}
+	
+	sauvegarde << "        " << Eb[j]->get_ErF()[i]->get_uid() << " " 
+	           << Eb[j]->get_ErF()[i]->get_dp() << " "
+		       << Eb[j]->get_ErF()[i]->get_position().x << " " 
+		       << Eb[j]->get_ErF()[i]->get_position().y  << " " 
+		       << Eb[j]->get_ErF()[i]->get_position_but().x << " " 
+		       << Eb[j]->get_ErF()[i]->get_position_but().y << " " 
+		       << atteintst << endl;	
+}
+
+void save_robotT(ofstream& sauvegarde, int j, int i)
+{
+	string atteintst, retourst;
+	if (Eb[j]->get_ErT()[i]->get_at() == 0) {atteintst = "false";}
+	else {atteintst = "true";}
+	if (Eb[j]->get_ErT()[i]->get_rt() == 0) {retourst = "false";}
+	else {retourst= "true";}
+	
+	sauvegarde << "        " << Eb[j]->get_ErT()[i]->get_uid() << " " 
+			   << Eb[j]->get_ErT()[i]->get_dp() << " "
+		       <<Eb[j]->get_ErT()[i]->get_position().x << " " 
+		       << Eb[j]->get_ErT()[i]->get_position().y << " " 
+		       << Eb[j]->get_ErT()[i]->get_position_but().x << " "
+		       << Eb[j]->get_ErT()[i]->get_position_but().y << " " 
+		       << atteintst << " " 
+		       << retourst << endl;	
+}
+
+void save_robotC(ofstream& sauvegarde, int j, int i)
+{
+	string atteintst;
+	if (Eb[j]->get_ErC()[i]->get_at() == 0) {atteintst = "false";}
+	else {atteintst = "true";}
+	
+	sauvegarde << "        " << Eb[j]->get_ErC()[i]->get_uid() << " " 
+			   << Eb[j]->get_ErC()[i]->get_dp() << " "
+		       << Eb[j]->get_ErC()[i]->get_position().x << " " 
+		       << Eb[j]->get_ErC()[i]->get_position().y << " " 
+		       << Eb[j]->get_ErC()[i]->get_position_but().x << " " 
+		       << Eb[j]->get_ErC()[i]->get_position_but().y << " " 
+		       << atteintst << endl;
+}
 //Methodes 
 void Base::decodage_robotP(int nbP, ifstream &config)
 {
@@ -67,7 +160,7 @@ void Base::decodage_robotP(int nbP, ifstream &config)
 	while (i<nbP){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		ErP.push_back(new RobotP(creer_robotP(line)));
+		ErP.push_back(shared_ptr<RobotP> (new RobotP(creer_robotP(line))));
 		Er.push_back(ErP.back());
 		++i;
 	}
@@ -80,7 +173,7 @@ void Base::decodage_robotF(int nbF, ifstream &config)
 	while (i<nbF){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		ErF.push_back(new RobotF(creer_robotF(line)));
+		ErF.push_back(shared_ptr<RobotF> (new RobotF(creer_robotF(line))));
 		Er.push_back(ErF.back());
 		++i;
 	}
@@ -93,7 +186,7 @@ void Base::decodage_robotT(int nbT, ifstream &config)
 	while (i<nbT){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		ErT.push_back(new RobotT(creer_robotT(line)));
+		ErT.push_back(shared_ptr<RobotT> (new RobotT(creer_robotT(line))));
 		Er.push_back(ErT.back());
 		++i;
 	}
@@ -106,7 +199,7 @@ void Base::decodage_robotC(int nbC, ifstream &config)
 	while (i<nbC){
 		getline(config >> ws, line);
 		if (line[0] == '#') {continue;}
-		ErC.push_back(new RobotC(creer_robotC(line)));
+		ErC.push_back(shared_ptr<RobotC> (new RobotC(creer_robotC(line))));
 		Er.push_back(ErC.back());
 		
 		++i;
@@ -117,9 +210,9 @@ void Base::decodage_robotC(int nbC, ifstream &config)
 
 void Base::intersection(){
 	//parcours de l'ensemble
-	for(size_t i(0); i<Eb.size(); ++i){
-		Point centre2(Eb[i].get_centre());
-		double rayon2(Eb[i].get_rayon());
+	for(size_t i(0); i<Eb.size()-1; ++i){
+		Point centre2(Eb[i]->get_centre());
+		double rayon2(Eb[i]->get_rayon());
 		//test d'intersection
 		if(cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message::base_superposition(centre.x, centre.y, 
@@ -156,49 +249,33 @@ void Base::test_robocom(){
 	}
 }
 	
-//Getters
-Point Base::get_centre() {return centre;}
+//Getters Setters
+Point& Base::get_centre() {return centre;}
 
 double Base::get_ressources() {return ressources;}
 
 double Base::get_rayon() {return rayon;}
 
-vector<Robot*>& Base::get_Er() {return Er;}
-vector<RobotP*> Base::get_ErP() {return ErP;}
-vector<RobotF*> Base::get_ErF() {return ErF;}
-vector<RobotT*> Base::get_ErT() {return ErT;}
-vector<RobotC*> Base::get_ErC() {return ErC;}
+vector<shared_ptr<Robot>>& Base::get_Er() {return Er;}
+vector<shared_ptr<RobotP>>& Base::get_ErP() {return ErP;}
+vector<shared_ptr<RobotF>>& Base::get_ErF() {return ErF;}
+vector<shared_ptr<RobotT>>& Base::get_ErT() {return ErT;}
+vector<shared_ptr<RobotC>>& Base::get_ErC() {return ErC;}
 
-vector<Base>& get_Eb() {return Eb;}
+vector<unique_ptr<Base>>& get_Eb() {return Eb;}
 
+int Base::get_nbP() {return nbP;}
+int Base::get_nbF() {return nbF;}
+int Base::get_nbT() {return nbT;}
+int Base::get_nbC() {return nbC;}
+
+void Base::set_ressources(double r) {ressources = r;}
 
 //Constructeur
 Base::Base(double x, double y, double ressources, int nbP, int nbF,
            int nbT, int nbC)
            : centre({x, y}), ressources(ressources), rayon(rayon_base), nbP(nbP), 
            nbF(nbF), nbT(nbT), nbC(nbC) {}
-           
- 
-//Destructeur
-Base::~Base()
-{
-	for(size_t i(0); i<Er.size(); ++i){
-		delete Er[i];
-		Er[i] = nullptr;
-	}
-	for(size_t i(0); i<ErP.size(); ++i){
-		ErP[i] = nullptr;
-	}
-	for(size_t i(0); i<ErF.size(); ++i){
-		ErF[i] = nullptr;
-	}
-	for(size_t i(0); i<ErT.size(); ++i){
-		ErT[i] = nullptr;
-	}
-	for(size_t i(0); i<ErC.size(); ++i){
-		ErC[i] = nullptr;
-	}		
-}
 
 
 

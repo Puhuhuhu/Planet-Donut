@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "robot.h"
+#include <memory>
+#include <sstream>
 
 class Base
 {
@@ -15,23 +17,27 @@ class Base
 		int nbF;
 		int nbT;
 		int nbC;
-		std::vector<Robot*> Er;
-		std::vector<RobotP*> ErP;
-		std::vector<RobotF*> ErF;
-		std::vector<RobotT*> ErT;
-		std::vector<RobotC*> ErC;
+		std::vector<std::shared_ptr<Robot>> Er;
+		std::vector<std::shared_ptr<RobotP>> ErP;
+		std::vector<std::shared_ptr<RobotF>> ErF;
+		std::vector<std::shared_ptr<RobotT>> ErT;
+		std::vector<std::shared_ptr<RobotC>> ErC;
 				
 	public :
 		Base(double x, double y, double ressources, int nbP, int nbF, int nbT,int nbC);
-		~Base();
-		Point get_centre();
+		Point& get_centre();
 		double get_ressources();
+		void set_ressources(double r);
 		double get_rayon();
-		std::vector<Robot*>& get_Er();
-		std::vector<RobotP*> get_ErP();
-		std::vector<RobotF*> get_ErF();
-		std::vector<RobotT*> get_ErT();
-		std::vector<RobotC*> get_ErC();
+		int get_nbP();
+		int get_nbF();
+		int get_nbT();
+		int get_nbC();
+		std::vector<std::shared_ptr<Robot>>& get_Er();
+		std::vector<std::shared_ptr<RobotP>>& get_ErP();
+		std::vector<std::shared_ptr<RobotF>>& get_ErF();
+		std::vector<std::shared_ptr<RobotT>>& get_ErT();
+		std::vector<std::shared_ptr<RobotC>>& get_ErC();
 		void intersection();
 		void test_uid();
 		void test_robocom();
@@ -39,8 +45,6 @@ class Base
 		void decodage_robotF(int nbF, std::ifstream &config);
 		void decodage_robotT(int nbT, std::ifstream &config);
 		void decodage_robotC(int nbC, std::ifstream &config);
-		
-		void taille_Er();
 };
 		
 
@@ -49,8 +53,14 @@ void lecture_base(std::string line, std::ifstream &config);
 void creer_base(double x, double y, double ressources, int nbP, int nbF, int nbT, 
                 int nbC, std::ifstream &config);
 
-std::vector<Base>& get_Eb();
+std::vector<std::unique_ptr<Base>>& get_Eb();
 
-void test_taille();
+void save_base(std::ofstream& sauvegarde);
+
+void save_robot(std::ofstream& sauvegarde, int j);
+void save_robotP(std::ofstream& sauvegarde, int j, int i);
+void save_robotF(std::ofstream& sauvegarde, int j, int i);
+void save_robotT(std::ofstream& sauvegarde, int j, int i);
+void save_robotC(std::ofstream& sauvegarde, int j, int i);
 
 #endif

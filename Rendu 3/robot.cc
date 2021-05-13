@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -98,7 +99,6 @@ RobotC creer_robotC(string line)
 	}
 }
 
-
 Robot::Robot(int uid, double dp, double x, double y, double xb, 
              double yb, bool atteint)
 	: uid(uid), dp(dp), position({x, y}), position_but({xb, yb}), atteint(atteint) {}
@@ -168,10 +168,21 @@ bool RobotT::get_rt(){
     return retour;
 }
 	
-vector <Robot*>& Robot::get_voisin()
+bool Robot::get_visited() {return visited;}
+
+void Robot::set_visited(bool v) {visited = v;}	
+
+void Robot::set_connect(bool c) {connect = c;}
+
+bool Robot::get_connect() {return connect;}
+
+void Robot::set_dp(double d) {dp = d;}
+
+vector<Robot*>& Robot::get_voisin()
 {
 	return voisin;
 }
+	
 	
 	
 	

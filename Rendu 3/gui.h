@@ -3,6 +3,7 @@
 #include <gtkmm.h>
 #include "simulation.h"
 #include "geomod.h"
+#include <string>
 
 
 class MyArea : public Gtk::DrawingArea
@@ -21,7 +22,7 @@ class MyArea : public Gtk::DrawingArea
 class SimulationWindow : public Gtk::Window
 {
 	public:
-		SimulationWindow();
+		SimulationWindow(int argc, char *argv[]);
 		virtual ~SimulationWindow();
 		
 	protected:
@@ -39,12 +40,13 @@ class SimulationWindow : public Gtk::Window
 		void on_button_clicked_togglelink();
 		void on_button_clicked_togglerange();
 		bool on_idle();
+		bool on_key_press_event(GdkEventKey * key_event);
 		
 	private:
 		bool started;
 		unsigned count;
 };
 
-		
+std::string decode_filename(std::string name);
 
 #endif

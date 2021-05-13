@@ -7,12 +7,13 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
 
 
-static vector<Gisement> Eg; //Ensemble Eg
+static vector<unique_ptr<Gisement>> Eg; //Ensemble Eg
 
 
 //Fonctions
@@ -32,17 +33,16 @@ void creer_gisement(double x, double y, double rayon, double capacite)
 	and (capacite <= 1000*(rayon/rayon_min)*(rayon/rayon_min))){
 		coord_norm(x);
 		coord_norm(y);
-		Gisement g(x, y, rayon, capacite);  //Creation du gisement
-		g.intersection(); //Verification des possibles intersections
-		Eg.push_back(g);  //ajout du gisement dans l'ensemble Eg
+		Eg.push_back(unique_ptr<Gisement>(new Gisement(x, y, rayon, capacite)));  //Creation du gisement
+		Eg.back()->intersection(); //Verification des possibles intersections
 	}else{exit(0);}	
 }
 
 
 void intersection_base_gisement(Point centre, double rayon){
 	for(size_t i(0); i<Eg.size(); ++i){
-		Point centre2(Eg[i].get_centre());
-		double rayon2(Eg[i].get_rayon());
+		Point centre2(Eg[i]->get_centre());
+		double rayon2(Eg[i]->get_rayon());
 		if (cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message ::base_field_superposition(centre.x, centre.y,
 			centre2.x, centre2.y);
@@ -52,12 +52,20 @@ void intersection_base_gisement(Point centre, double rayon){
 }
 	
 
+void save_gisement(ofstream& sauvegarde)
+{
+	for (size_t i(0); i<Eg.size() ; ++i){
+		sauvegarde << "    " << Eg[i]->get_centre().x << " " << Eg[i]->get_centre().y 
+		<< " " << Eg[i]->get_rayon() << " " << Eg[i]->get_capacite() << endl;
+	}
+}
+
 //Methodes
 void Gisement::intersection(){
 	//parcours de l'ensemble
-	for(size_t i(0); i<Eg.size(); ++i){
-		Point centre2(Eg[i].get_centre());
-		double rayon2(Eg[i].get_rayon());
+	for(size_t i(0); i<Eg.size()-1; ++i){
+		Point centre2(Eg[i]->get_centre());
+		double rayon2(Eg[i]->get_rayon());
 		//test d'intersection
 		if(cercle_cercle(centre, rayon, centre2, rayon2)){
 			cout << message::field_superposition(centre.x, centre.y, 
