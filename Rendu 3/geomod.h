@@ -54,6 +54,8 @@ void get_robot_infos(Point centre, int i);
 
 void get_robot_positionsAB(Point robot_A, Point B);
 
+void get_robot_com_infos(Point centre);
+
 
 #endif
 

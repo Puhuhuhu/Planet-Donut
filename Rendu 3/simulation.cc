@@ -222,6 +222,16 @@ void Simulation::draw_robot()
 	}
 }
 
+void Simulation::draw_rayon_comm()
+{
+    for (size_t i(0); i<get_Eb().size(); ++i){
+        for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
+            Point position(get_Eb()[i]->get_Er()[j]->get_position());
+            get_robot_com_infos(position);
+        }
+    }
+}
+
 void Simulation::update_robot()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
@@ -230,7 +240,7 @@ void Simulation::update_robot()
 		}
 	}
 }
-
+/*
 void Simulation::update_remote()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
@@ -256,7 +266,7 @@ void Simulation::update_remote()
 		}
 	}
 }
-				
+	*/
 	
 
 //Getter
