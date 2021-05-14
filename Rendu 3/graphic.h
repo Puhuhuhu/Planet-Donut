@@ -11,4 +11,6 @@ void graphic_draw_base(double x, double y, double rayon, int i);
 
 void graphic_draw_robot(double x, double y, int i);
 
+void graphic_draw_line(double robotA_x, double robotA_y, double robotB_x, double robotB_y);
+
 #endif

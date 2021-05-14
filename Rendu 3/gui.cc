@@ -144,6 +144,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	simulation.draw_base();
 	simulation.draw_robot();
 	simulation.draw_gisement();
+    simulation.draw_line();
 	return true;
 }
 

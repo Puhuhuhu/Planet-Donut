@@ -52,6 +52,9 @@ void get_gisement_infos(Point centre, double rayon);
 
 void get_robot_infos(Point centre, int i);
 
+void get_robot_positionsAB(Point robot_A, Point B);
+
+
 #endif
 
 

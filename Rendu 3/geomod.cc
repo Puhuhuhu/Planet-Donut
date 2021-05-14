@@ -166,3 +166,28 @@ void get_robot_infos(Point centre, int i){
     coord_norm(centre);
     graphic_draw_robot(centre.x, centre.y, i);
 }
+void get_robot_positionsAB(Point robot_A, Point B)
+{
+    double petit_norm(2*getMax());
+    Point robot_B;
+    for(int k = -1; k < 2; k++){
+        //faire varier la position de B selon x
+        double B_plan_x = B.x + k * 2* getMax();
+        double distanceX(B_plan_x - robot_A.x);
+        
+        for(int j = -1; j < 2; j++){
+            //faire varier la position de B selon y
+            double B_plan_y = B.y + j * 2*getMax();
+            double distanceY(B_plan_y - robot_A.y);
+            double norm( sqrt( distanceX * distanceX + distanceY  * distanceY));
+            
+            if(norm < petit_norm){
+                petit_norm = norm;
+                robot_B.x = B_plan_x;
+                robot_B.y = B_plan_y;
+            }
+        }
+    }
+    graphic_draw_line(robot_A.x, robot_A.y, robot_B.x, robot_B.y);
+}
+

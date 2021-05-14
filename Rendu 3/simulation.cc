@@ -224,6 +224,17 @@ void Simulation::draw_robot()
 		}
 	}
 }
+void Simulation::draw_line(){
+    for (size_t i(0); i<get_Eb().size(); ++i){
+        for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
+            for (size_t k(0); k<get_Eb()[i]->get_Er()[j]->get_voisin().size(); ++k){
+                Point position_A(get_Eb()[i]->get_Er()[j]->get_position());
+                Point position_B(get_Eb()[i]->get_Er()[j]->get_voisin()[k]->get_position());
+                get_robot_positionsAB(position_A,position_B);
+            }
+        }
+    }
+}
 
 void Simulation::update_robot()
 {
