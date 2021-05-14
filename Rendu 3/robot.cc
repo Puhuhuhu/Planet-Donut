@@ -29,6 +29,8 @@ RobotP creer_robotP(string line)
 			else {retour = false;}
 			if (atteintst =="true") {atteint = true;}
 			else {atteint = false;}
+			coord_norm(x);
+			coord_norm(y);
 			RobotP p(uid, dp, x, y, xb, yb, atteint, retour, found, 0, 0, 0, 0);
 			return p;
 		}
@@ -60,6 +62,8 @@ RobotF creer_robotF(string line)
 	else {
 		if (atteintst=="true") {atteint = true;}
 		else {atteint = false;}
+		coord_norm(x);
+		coord_norm(y);
 		RobotF f(uid, dp, x, y, xb, yb, atteint);
 		return f;
 	}
@@ -78,6 +82,8 @@ RobotT creer_robotT(string line)
 		else {atteint = false;}
 		if (retourst == "true") {retour = true;}
 		else {retour = false;}
+		coord_norm(x);
+		coord_norm(y);
 		RobotT t(uid, dp, x, y, xb, yb, atteint, retour);
 		return t;
 	}
@@ -94,6 +100,8 @@ RobotC creer_robotC(string line)
 	else{
 		if (atteintst=="true") {atteint = true;}
 		else {atteint = false;}
+		coord_norm(x);
+		coord_norm(y);
 		RobotC c(uid, dp, x, y, xb, yb, atteint);
 		return c;
 	}

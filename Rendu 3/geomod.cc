@@ -2,7 +2,7 @@
 #include <cmath>
 #include "geomod.h"
 #include "graphic.h"
-
+#include <iostream>
 
 static double epsilon_zero(0);
 static double max(0);
@@ -116,3 +116,17 @@ bool cercle_cercle(Point &p1, const double &r1, Point &p2, const double &r2)
 	}else{return false;}
 }
 
+void get_base_infos(Point centre, double rayon)
+{
+	std::cout << centre.x << " " << centre.y << " " << rayon << std::endl;
+}
+
+void get_gisement_infos(Point centre, double rayon)
+{
+	std::cout << centre.x << " " << centre.y << " " << rayon << std::endl;
+}
+
+void get_robot_infos(Point position)
+{
+	std::cout << position.x << " " << position.y << std::endl;
+}

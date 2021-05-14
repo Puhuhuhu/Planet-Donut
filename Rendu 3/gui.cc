@@ -110,15 +110,12 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	Gtk::Allocation allocation = get_allocation();
 	int width = allocation.get_width();
 	int height = allocation.get_height();
-	cout << width << " " << height << endl;
-	cout << "oui" << endl;
 	
 	int xc, yc;
 	xc = width / 2;
 	yc = height / 2;
 	
-	graphic_set_context(cr);
-	
+	graphic_set_context(cr);	
 	
 	return true;
 }
@@ -142,7 +139,9 @@ void SimulationWindow::on_button_clicked_step()
 {
 	simulation.update_voisin();
 	simulation.connexion();
-	simulation.verif_connexion();
+	simulation.draw_base();
+	simulation.draw_robot();
+	simulation.draw_gisement();
 	cout << "mise à jour de la simulation " << ++count << endl;
 }
 
