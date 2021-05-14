@@ -29,11 +29,11 @@ class Simulation
 		void connexion();
 		void verif_connexion();
 		void maintenance();
+		void update_robot();
 		void graphic_robot();
 		void draw_base();
 		void draw_gisement();
 		void draw_robot();
-		
 };
 
 

@@ -6,15 +6,32 @@
 #include <string>
 
 
+struct Frame // Framing and window parameters
+{
+	double xMin; // frame parameters
+	double xMax;
+	double yMin;
+	double yMax;
+	double asp;  // frame aspect ratio
+	int height;  // window height
+	int width;   // window width
+};
+
 class MyArea : public Gtk::DrawingArea
 {
 	public :
 		MyArea();
 		virtual ~MyArea();
+		void setFrame(Frame x);
+		void refresh();
 	
 	protected :
 		bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
-
+		
+	private :
+		void adjust_frame();
+		Frame frame_ref;
+		Frame frame;
 };
 
 

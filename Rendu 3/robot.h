@@ -28,6 +28,8 @@ class Robot
         void set_dp(double d);
         Point& get_position();
         Point get_position_but();
+        void set_position(double x, double y);
+        void set_position_but(double x, double y);
         bool get_at();
         std::vector<Robot*>& get_voisin();
         Robot(int uid, double dp, double x, double y, double xb, 

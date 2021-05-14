@@ -200,7 +200,7 @@ void Simulation::draw_base()
 		cout << "draw base" << endl;
 		Point centre(get_Eb()[i]->get_centre());
 		double rayon(get_Eb()[i]->get_rayon());
-		get_base_infos(centre, rayon);
+		get_base_infos(centre, rayon, i);
 	}
 }
 
@@ -220,7 +220,16 @@ void Simulation::draw_robot()
 		for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
 			cout << "draw robot" << endl;
 			Point position(get_Eb()[i]->get_Er()[j]->get_position());
-			get_robot_infos(position);
+			get_robot_infos(position, i);
+		}
+	}
+}
+
+void Simulation::update_robot()
+{
+	for (size_t i(0); i<get_Eb().size(); ++i){
+		for(size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
+			get_Eb()[i]->get_Er()[j]->set_position(get_Eb()[i]->get_Er()[j]->get_position().x + deltaD, get_Eb()[i]->get_Er()[j]->get_position().y);
 		}
 	}
 }

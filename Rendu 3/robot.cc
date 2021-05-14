@@ -191,8 +191,17 @@ vector<Robot*>& Robot::get_voisin()
 	return voisin;
 }
 	
-	
-	
+void Robot::set_position(double x, double y)
+{
+	position.x = x;
+	position.y = y;
+}
+
+void Robot::set_position_but(double x, double y)
+{
+	position_but.x = x;
+	position_but.y = y;
+}
 	
 	
 	

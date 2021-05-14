@@ -46,9 +46,19 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_frame_toggledisplay("Toggle display")
 	
 {	
+	Frame prm;
+	prm.xMin = 50;
+	prm.xMax = dim_max;
+	prm.yMin = -dim_max;
+	prm.yMax = dim_max;
+	prm.asp = (prm.xMax-prm.xMin) / (prm.yMax-prm.yMin);
+	prm.height = 2*dim_max;
+	prm.width = prm.height*prm.asp;
+	
+	m_area.setFrame(prm);
+	
 	set_title("Simulation");
 	set_border_width(0);
-	
 	add(m_box);
 	m_box.set_border_width(10);
 	m_box.pack_start(m_box_top);
@@ -57,7 +67,7 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box.pack_start(m_box_bottom);
 	
 	m_area.set_size_request(800, 800);
-	m_box_top_right.pack_start(m_area);
+	m_box_top_right.add(m_area);
 	
 	m_frame_general.add(m_box_frame_general);
 	m_box_frame_general.pack_start(m_button_exit);
@@ -107,17 +117,82 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+	adjust_frame();
 	Gtk::Allocation allocation = get_allocation();
 	int width = allocation.get_width();
 	int height = allocation.get_height();
+	
+	cr->translate(width/2, height/2);
+	cr->scale(width/(2*dim_max), -height/(2*dim_max));
+	cr->translate(0, 0);
 	
 	int xc, yc;
 	xc = width / 2;
 	yc = height / 2;
 	
-	graphic_set_context(cr);	
+	cr->set_line_width(10);
+	cr->set_source_rgb(0.1, 0.1, 0.1);
+	cr->move_to(-dim_max, dim_max);
+	cr->line_to(dim_max, dim_max);
+	cr->line_to(dim_max, -dim_max);
+	cr->line_to(-dim_max, -dim_max);
+	cr->line_to(-dim_max, dim_max);
+	cr->stroke();
 	
+	graphic_set_context(cr, height, width, xc, yc);
+	
+	simulation.draw_base();
+	simulation.draw_robot();
+	simulation.draw_gisement();
 	return true;
+}
+
+void MyArea::refresh()
+{
+	auto win = get_window();
+    if(win)
+    {
+        Gdk::Rectangle r(0,0, get_allocation().get_width(), 
+                              get_allocation().get_height());
+
+        win->invalidate_rect(r,false);
+    }
+}
+
+void MyArea::setFrame(Frame x)
+{
+	frame_ref = x;
+	frame = frame_ref;
+}
+
+void MyArea::adjust_frame()
+{
+	Gtk::Allocation allocation = get_allocation();
+	const int width = allocation.get_width();
+	const int height = allocation.get_height();
+	
+	frame.width = width;
+	frame.height = height;
+	
+	double new_aspect_ratio((double)width/height);
+	if(new_aspect_ratio > frame_ref.asp){
+		frame.yMax = frame_ref.yMax;
+		frame.yMin = frame_ref.yMin;
+		double delta(frame_ref.xMax - frame_ref.xMin);
+		double mid((frame_ref.xMax + frame_ref.xMin)/2);
+	    frame.xMax = mid + 0.5*(new_aspect_ratio/frame_ref.asp)*delta ;
+	    frame.xMin = mid - 0.5*(new_aspect_ratio/frame_ref.asp)*delta ;		  	  
+    }
+    else
+    {
+	    frame.xMax = frame_ref.xMax ;
+	    frame.xMin = frame_ref.xMin ;
+	  	  
+ 	    double delta(frame_ref.yMax - frame_ref.yMin);
+	    double mid((frame_ref.yMax + frame_ref.yMin)/2);
+	    frame.yMax = mid + 0.5*(frame_ref.asp/new_aspect_ratio)*delta ;
+	    frame.yMin = mid - 0.5*(frame_ref.asp/new_aspect_ratio)*delta ;		  	  
+    }
 }
 
 void SimulationWindow::on_button_clicked_exit()
@@ -139,9 +214,8 @@ void SimulationWindow::on_button_clicked_step()
 {
 	simulation.update_voisin();
 	simulation.connexion();
-	simulation.draw_base();
-	simulation.draw_robot();
-	simulation.draw_gisement();
+	simulation.update_robot();
+	m_area.refresh();
 	cout << "mise à jour de la simulation " << ++count << endl;
 }
 
