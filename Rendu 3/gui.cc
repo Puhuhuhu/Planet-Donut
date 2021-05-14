@@ -107,6 +107,19 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
+	Gtk::Allocation allocation = get_allocation();
+	int width = allocation.get_width();
+	int height = allocation.get_height();
+	cout << width << " " << height << endl;
+	cout << "oui" << endl;
+	
+	int xc, yc;
+	xc = width / 2;
+	yc = height / 2;
+	
+	graphic_set_context(cr);
+	
+	
 	return true;
 }
 

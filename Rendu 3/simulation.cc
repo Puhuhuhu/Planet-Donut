@@ -193,7 +193,7 @@ void Simulation::maintenance()
 		}
 	}
 }	
-		
+
 
 //Getter
 bool Simulation::get_file_opened() {return file_opened;}

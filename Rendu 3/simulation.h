@@ -29,7 +29,9 @@ class Simulation
 		void connexion();
 		void verif_connexion();
 		void maintenance();
+		void graphic_robot();
 		
 };
+
 
 #endif
