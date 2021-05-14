@@ -116,3 +116,25 @@ bool cercle_cercle(Point &p1, const double &r1, Point &p2, const double &r2)
 	}else{return false;}
 }
 
+void get_base_infos(Point centre, double rayon){
+    coord_norm(centre);
+    Cercle base_est({rayon,centre}), base_ouest({rayon,centre}), base_nord({rayon,centre}), base_sud({rayon,centre});
+    if((centre.x + rayon ) > max) {base_est.centre.x = (centre.x)- 2*max;}
+    if((centre.x - rayon ) < -max) { base_ouest.centre.x = (centre.x) + 2*max;}
+    if((centre.y + rayon ) > max) { base_sud.centre.x = (centre.y)- 2*max;}
+    if((centre.y + rayon ) < -max) { base_nord.centre.x = (centre.y) + 2*max;}
+}
+
+void get_gisement_infos(Point centre, double rayon){
+    coord_norm(centre);
+    Cercle gisement_est({rayon,centre}), gisement_ouest({rayon,centre}), gisement_nord({rayon,centre}), gisement_sud({rayon,centre});
+    if((centre.x + rayon ) > max) {gisement_est.centre.x = (centre.x)- 2*max;}
+    if((centre.x - rayon ) < -max) { gisement_ouest.centre.x = (centre.x) + 2*max;}
+    if((centre.y + rayon ) > max) { gisement_sud.centre.x = (centre.y)- 2*max;}
+    if((centre.y + rayon ) < -max) { gisement_nord.centre.x = (centre.y) + 2*max;}
+
+}
+
+void get_robot_info(Point centre){
+    coord_norm(centre);
+}
