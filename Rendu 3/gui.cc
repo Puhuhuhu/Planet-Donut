@@ -12,6 +12,21 @@ using namespace std;
 
 static Simulation simulation;
 
+static void orthographic_projection(const Cairo::RefPtr<Cairo::Context>& cr, 
+									Frame frame)
+{
+	// déplace l'origine au centre de la fenêtre
+	cr->translate(frame.width/2, frame.height/2);
+  
+	// normalise la largeur et hauteur aux valeurs fournies par le cadrage
+	// ET inverse la direction de l'axe Y
+	cr->scale(frame.width/(frame.xMax - frame.xMin), 
+             -frame.height/(frame.yMax - frame.yMin));
+  
+	// décalage au centre du cadrage
+	cr->translate(-(frame.xMin + frame.xMax)/2, -(frame.yMin + frame.yMax)/2);
+}
+
 MyArea::MyArea() {}
 MyArea::~MyArea() {}
 
@@ -47,14 +62,13 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	
 {	
 	Frame prm;
-	prm.xMin = 50;
+	prm.xMin = -dim_max;
 	prm.xMax = dim_max;
 	prm.yMin = -dim_max;
 	prm.yMax = dim_max;
 	prm.asp = (prm.xMax-prm.xMin) / (prm.yMax-prm.yMin);
-	prm.height = 2*dim_max;
+	prm.height = 800;
 	prm.width = prm.height*prm.asp;
-	
 	m_area.setFrame(prm);
 	
 	set_title("Simulation");
@@ -66,7 +80,7 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_top.pack_start(m_box_top_right);
 	m_box.pack_start(m_box_bottom);
 	
-	m_area.set_size_request(800, 800);
+	m_area.set_size_request(prm.height, prm.width);
 	m_box_top_right.add(m_area);
 	
 	m_frame_general.add(m_box_frame_general);
@@ -118,13 +132,10 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
 	adjust_frame();
+	orthographic_projection(cr, frame);
 	Gtk::Allocation allocation = get_allocation();
 	int width = allocation.get_width();
 	int height = allocation.get_height();
-	
-	cr->translate(width/2, height/2);
-	cr->scale(width/(2*dim_max), -height/(2*dim_max));
-	cr->translate(0, 0);
 	
 	int xc, yc;
 	xc = width / 2;
@@ -144,7 +155,6 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	simulation.draw_base();
 	simulation.draw_robot();
 	simulation.draw_gisement();
-    simulation.draw_line();
 	return true;
 }
 
@@ -195,6 +205,7 @@ void MyArea::adjust_frame()
 	    frame.yMin = mid - 0.5*(frame_ref.asp/new_aspect_ratio)*delta ;		  	  
     }
 }
+
 
 void SimulationWindow::on_button_clicked_exit()
 {

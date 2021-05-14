@@ -34,7 +34,7 @@ class Simulation
 		void draw_base();
 		void draw_gisement();
 		void draw_robot();
-        void draw_line();
+		void update_remote()
 };
 
 

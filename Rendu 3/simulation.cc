@@ -197,7 +197,6 @@ void Simulation::maintenance()
 void Simulation::draw_base()
 {
 	for(size_t i(0); i<get_Eb().size(); ++i){
-		cout << "draw base" << endl;
 		Point centre(get_Eb()[i]->get_centre());
 		double rayon(get_Eb()[i]->get_rayon());
 		get_base_infos(centre, rayon, i);
@@ -207,7 +206,6 @@ void Simulation::draw_base()
 void Simulation::draw_gisement()
 {
 	for (size_t i(0); i<get_Eg().size(); ++i){
-		cout << "draw gisement" << endl;
 		Point centre(get_Eg()[i]->get_centre());
 		double rayon(get_Eg()[i]->get_rayon());
 		get_gisement_infos(centre, rayon);
@@ -218,22 +216,10 @@ void Simulation::draw_robot()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
 		for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
-			cout << "draw robot" << endl;
 			Point position(get_Eb()[i]->get_Er()[j]->get_position());
 			get_robot_infos(position, i);
 		}
 	}
-}
-void Simulation::draw_line(){
-    for (size_t i(0); i<get_Eb().size(); ++i){
-        for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
-            for (size_t k(0); k<get_Eb()[i]->get_Er()[j]->get_voisin().size(); ++k){
-                Point position_A(get_Eb()[i]->get_Er()[j]->get_position());
-                Point position_B(get_Eb()[i]->get_Er()[j]->get_voisin()[k]->get_position());
-                get_robot_positionsAB(position_A,position_B);
-            }
-        }
-    }
 }
 
 void Simulation::update_robot()
@@ -244,6 +230,34 @@ void Simulation::update_robot()
 		}
 	}
 }
+
+void Simulation::update_remote()
+{
+	for (size_t i(0); i<get_Eb().size(); ++i){
+		for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
+			if (get_Eb()[i]->get_ErP()[j]->get_connect()){
+				update_remote_p(i, j);
+			}
+		}
+		for (size_t j(0); j<get_Eb()[i]->get_ErF().size(); ++j){
+			if (get_Eb()[i]->get_ErF()[j]->get_connect()){
+				update_remote_f(i, j);
+			}
+		}
+		for (size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
+			if (get_Eb()[i]->get_ErT()[j]->get_connect()){
+				update_remote_t(i, j);
+			}
+		}
+		for (size_t j(0); j<get_Eb()[i]->get_ErC().size(); ++j){
+			if (get_Eb()[i]->get_ErC()[j]->get_connect()){
+				update_remote_c(i, j);
+			}
+		}
+	}
+}
+				
+	
 
 //Getter
 bool Simulation::get_file_opened() {return file_opened;}
