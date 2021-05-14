@@ -2,7 +2,7 @@
 #include <cmath>
 #include "geomod.h"
 #include "graphic.h"
-
+#include <iostream>
 
 static double epsilon_zero(0);
 static double max(0);

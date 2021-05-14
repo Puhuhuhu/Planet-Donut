@@ -30,6 +30,9 @@ class Simulation
 		void verif_connexion();
 		void maintenance();
 		void graphic_robot();
+		void draw_base();
+		void draw_gisement();
+		void draw_robot();
 		
 };
 

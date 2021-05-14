@@ -87,3 +87,4 @@ double Gisement::get_capacite() {return capacite;}
 
 Point Gisement::get_centre() {return centre;}
 
+vector<unique_ptr<Gisement>>& get_Eg() {return Eg;}

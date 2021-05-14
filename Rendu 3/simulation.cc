@@ -194,6 +194,36 @@ void Simulation::maintenance()
 	}
 }	
 
+void Simulation::draw_base()
+{
+	for(size_t i(0); i<get_Eb().size(); ++i){
+		cout << "draw base" << endl;
+		Point centre(get_Eb()[i]->get_centre());
+		double rayon(get_Eb()[i]->get_rayon());
+		get_base_infos(centre, rayon);
+	}
+}
+
+void Simulation::draw_gisement()
+{
+	for (size_t i(0); i<get_Eg().size(); ++i){
+		cout << "draw gisement" << endl;
+		Point centre(get_Eg()[i]->get_centre());
+		double rayon(get_Eg()[i]->get_rayon());
+		get_gisement_infos(centre, rayon);
+	}
+}
+
+void Simulation::draw_robot()
+{
+	for (size_t i(0); i<get_Eb().size(); ++i){
+		for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
+			cout << "draw robot" << endl;
+			Point position(get_Eb()[i]->get_Er()[j]->get_position());
+			get_robot_infos(position);
+		}
+	}
+}
 
 //Getter
 bool Simulation::get_file_opened() {return file_opened;}

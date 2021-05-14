@@ -115,8 +115,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	xc = width / 2;
 	yc = height / 2;
 	
-	graphic_set_context(cr);
-	
+	graphic_set_context(cr);	
 	
 	return true;
 }
@@ -140,10 +139,9 @@ void SimulationWindow::on_button_clicked_step()
 {
 	simulation.update_voisin();
 	simulation.connexion();
-	simulation.verif_connexion();
-    Point centre({999, 100});
-    double rayon = 100;
-    get_base_infos(centre,rayon);
+	simulation.draw_base();
+	simulation.draw_robot();
+	simulation.draw_gisement();
 	cout << "mise à jour de la simulation " << ++count << endl;
 }
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include "geomod.h"
 #include <sstream>
+#include <memory>
 
 class Gisement 
 {
@@ -29,5 +30,7 @@ void creer_gisement(double x, double y, double rayon, double capacite);
 void intersection_base_gisement(Point centre, double rayon);
 
 void save_gisement(std::ofstream& sauvegarde);
+
+std::vector<std::unique_ptr<Gisement>>& get_Eg();
 
 #endif
