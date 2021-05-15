@@ -4,19 +4,9 @@
 
 static const Cairo::RefPtr<Cairo::Context>* ptcr(nullptr);
 
-static double height;
-static double width;
-static double xc;
-static double yc;
-
-void graphic_set_context(const Cairo::RefPtr<Cairo::Context>& cr, double h, double w, double x, double y)
+void graphic_set_context(const Cairo::RefPtr<Cairo::Context>& cr)
 {
 	ptcr = &cr;
-	height = h;
-	width = w;
-	xc = x;
-	yc = y;
-	
 }
 
 void graphic_draw_gisement(double x, double y, double rayon, double r, double g, double b)
@@ -105,5 +95,28 @@ void graphic_draw_robot_comm(double centre_x, double centre_y){
     (*ptcr)->arc(centre_x, centre_y, rayon_comm, 0, 2*M_PI);
     (*ptcr)->stroke();
 }
+
+void graphic_draw_rectangle(double xmin, double xmax, double ymin, double ymax, double dim_max)
+{
+	(*ptcr)->set_source_rgb(0.94, 0.94, 0.94);
+	(*ptcr)->set_line_width(1);
+	(*ptcr)->move_to(xmin, ymin);
+	(*ptcr)->line_to(xmin, ymax);
+	(*ptcr)->line_to(-dim_max, ymax);
+	(*ptcr)->line_to(-dim_max, ymin);
+	(*ptcr)->line_to(xmin, ymin);
+	(*ptcr)->fill_preserve();
+	
+	(*ptcr)->move_to(xmax, ymax);
+	(*ptcr)->line_to(dim_max, ymax);
+	(*ptcr)->line_to(dim_max, ymin);
+	(*ptcr)->line_to(xmax, ymin);
+	(*ptcr)->line_to(xmax, ymax);
+	(*ptcr)->fill_preserve();
+	
+	(*ptcr)->stroke();
+}
+	
+	
 
 

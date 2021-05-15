@@ -13,6 +13,7 @@ using namespace std;
 static Simulation simulation;
 
 static bool togglelink(0);
+static bool togglerange(0);
 
 static void orthographic_projection(const Cairo::RefPtr<Cairo::Context>& cr, 
 									Frame frame)
@@ -115,7 +116,7 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_bottom_label.pack_start(m_frame_ammountresource);
 	m_box_bottom_label.pack_start(m_frame_missioncompleteness);
 	//m_box_bottom_info.set_vexpand();
-	m_box_bottom.pack_start(m_box_bottom_info);
+	m_box_bottom.pack_start(m_box_bottom_info, Gtk::PACK_SHRINK);
 	
 	m_button_exit.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_exit));
 	m_button_startstop.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_startstop));
@@ -123,7 +124,9 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_button_open.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_open));
 	m_button_save.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_save));
 	m_button_togglelink.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglelink));
+	m_button_togglerange.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglerange));
 	Glib::signal_idle().connect( sigc::mem_fun(*this, &SimulationWindow::on_idle) );
+	creation_infos();
 	
 	show_all_children();
 	
@@ -137,15 +140,14 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-	adjust_frame();
-	orthographic_projection(cr, frame);
 	Gtk::Allocation allocation = get_allocation();
 	int width = allocation.get_width();
 	int height = allocation.get_height();
 	
-	int xc, yc;
-	xc = width / 2;
-	yc = height / 2;
+	graphic_set_context(cr);
+	
+	adjust_frame();
+	orthographic_projection(cr, frame);
 	
 	cr->set_line_width(5);
 	cr->set_source_rgb(0.1, 0.1, 0.1);
@@ -156,15 +158,12 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	cr->line_to(-dim_max, dim_max);
 	cr->stroke();
 	
-	graphic_set_context(cr, height, width, xc, yc);
-	
 	simulation.draw_base();
 	simulation.draw_robot();
 	simulation.draw_gisement();
-	if (togglelink){
-		simulation.draw_liaison();
-	}
-    simulation.draw_rayon_comm();
+	if (togglelink){simulation.draw_liaison();}
+    if (togglerange) {simulation.draw_rayon_comm();}
+    graphic_draw_rectangle(frame.xMin, frame.xMax, frame.yMin, frame.yMax, dim_max);
     
 	return true;
 }
@@ -308,6 +307,12 @@ void SimulationWindow::on_button_clicked_togglelink()
 	m_area.refresh();
 }
 	
+void SimulationWindow::on_button_clicked_togglerange()
+{
+	togglerange = !togglerange;
+	m_area.refresh();
+}
+
 
 bool SimulationWindow::on_key_press_event(GdkEventKey * key_event)
 {
@@ -342,4 +347,20 @@ string decode_filename(string name)
 		newname = name[i] + newname;
 	}
 	return newname;
+}
+
+
+void SimulationWindow::creation_infos()
+{
+	for (int i(0) ; i < 3; ++i){
+		numero_base.push_back(unique_ptr<Gtk::Box> (new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 0)));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
+		m_box_bottom_info.pack_start(*(numero_base[i]));
+	}
 }

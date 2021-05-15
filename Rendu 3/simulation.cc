@@ -254,7 +254,7 @@ void Simulation::draw_liaison()
 	}
 }
 
-/*
+
 void Simulation::update_remote()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
@@ -290,7 +290,6 @@ void Simulation::update_remote_p(size_t i, size_t j)
 void Simulation::update_remote_f(size_t i, size_t j){}
 void Simulation::update_remote_t(size_t i, size_t j){}
 void Simulation::update_remote_c(size_t i, size_t j){}
-	*/
 	
 
 //Getter

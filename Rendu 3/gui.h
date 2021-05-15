@@ -4,6 +4,8 @@
 #include "simulation.h"
 #include "geomod.h"
 #include <string>
+#include <vector>
+#include <memory>
 
 
 struct Frame // Framing and window parameters
@@ -58,6 +60,9 @@ class SimulationWindow : public Gtk::Window
 		bool on_idle();
 		bool on_key_press_event(GdkEventKey * key_event);
 		MyArea m_area;
+		std::vector<std::unique_ptr<Gtk::Box>> numero_base;
+		void creation_infos();
+		
 		
 	private:
 		bool started;
