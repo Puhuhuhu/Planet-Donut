@@ -60,7 +60,6 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_label_nbC("nbC"),
 	m_label_amountresource("Amount resource"),
 	m_label_missioncompleteness("Mission completeness"),
-    m_label_NB("5"),
 	m_frame_general("General"),
 	m_frame_toggledisplay("Toggle display")
 	
