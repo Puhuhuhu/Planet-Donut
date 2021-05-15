@@ -41,6 +41,7 @@ class Simulation
 		void update_remote_t(size_t i, size_t j);
 		void update_remote_c(size_t i, size_t j);
 		
+        void draw_rayon_comm();
 };
 
 

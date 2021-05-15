@@ -2,6 +2,7 @@
 #include <cmath>
 #include "geomod.h"
 #include "graphic.h"
+#include "constantes.h"
 #include <iostream>
 
 static double epsilon_zero(0);
@@ -191,3 +192,29 @@ void get_robot_positionsAB(Point robot_A, Point B)
     graphic_draw_line(robot_A.x, robot_A.y, robot_B.x, robot_B.y);
 }
 
+void get_robot_com_infos(Point centre){
+//    i = i%5;
+    coord_norm(centre);
+    Point robot_com_est(centre), robot_com_ouest(centre), robot_com_nord(centre), robot_com_sud(centre);
+    if((centre.x + rayon_comm ) > max) {
+        robot_com_est.x = (centre.x)- 2*max;
+        graphic_draw_robot_comm(robot_com_est.x, centre.y);
+    }
+    
+    if((centre.x - rayon_comm ) < -max) {
+        robot_com_ouest.x = (centre.x) + 2*max;
+        graphic_draw_robot_comm(robot_com_ouest.x, centre.y);
+    }
+    
+    if((centre.y + rayon_comm ) > max) {
+        robot_com_sud.y = (centre.y)- 2*max;
+        graphic_draw_robot_comm(centre.x, robot_com_sud.y);
+    }
+    
+    if((centre.y - rayon_comm ) < -max) {
+        robot_com_nord.y = (centre.y) + 2*max;
+        graphic_draw_robot_comm(centre.x, robot_com_nord.y);
+    }
+    
+    graphic_draw_robot_comm(centre.x, centre.y);
+}

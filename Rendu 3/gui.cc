@@ -164,6 +164,8 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	if (togglelink){
 		simulation.draw_liaison();
 	}
+    simulation.draw_rayon_comm();
+    
 	return true;
 }
 
