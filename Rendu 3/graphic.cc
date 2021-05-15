@@ -13,6 +13,7 @@ void graphic_draw_gisement(double x, double y, double rayon, double r, double g,
 {
 	(*ptcr)->set_source_rgb(r, g, b);
 	(*ptcr)->arc(x, y, rayon, 0, 2*M_PI);
+    (*ptcr)->fill_preserve();
 	(*ptcr)->stroke();
 }
 
@@ -45,6 +46,7 @@ void graphic_draw_base(double x, double y, double rayon, int i)
 		}
 			
 	(*ptcr)->arc(x, y, 10*rayon, 0, 2*M_PI);
+    (*ptcr)->fill_preserve();
 	(*ptcr)->stroke();
 }
 

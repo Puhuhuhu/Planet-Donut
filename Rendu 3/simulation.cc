@@ -255,6 +255,33 @@ void Simulation::draw_liaison()
 }
 
 
+//recevoir les infos relatives aux bases
+int Simulation::conteur_base(){
+     return get_Eb().size();
+}
+
+int Simulation::conteur_robotP(int base_numero){
+    return get_Eb()[base_numero]->get_nbP();
+}
+
+int Simulation::conteur_robotF(int base_numero){
+    return get_Eb()[base_numero]->get_nbF();
+}
+
+int Simulation::conteur_robotC(int base_numero){
+    return get_Eb()[base_numero]->get_nbC();
+}
+
+int Simulation::conteur_robotT(int base_numero){
+    return get_Eb()[base_numero]->get_nbT();
+}
+
+int Simulation::conteur_resources(int base_numero){
+    return get_Eb()[base_numero]->get_ressources();
+}
+
+
+
 void Simulation::update_remote()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
