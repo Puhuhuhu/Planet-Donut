@@ -212,12 +212,42 @@ void Simulation::draw_gisement()
 	}
 }
 
-void Simulation::draw_robot()
+void Simulation::draw_robotP()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
-		for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
-			Point position(get_Eb()[i]->get_Er()[j]->get_position());
-			get_robot_infos(position, i);
+		for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
+			Point position(get_Eb()[i]->get_ErP()[j]->get_position());
+			get_robotP_infos(position, i);
+		}
+	}
+}
+
+void Simulation::draw_robotF()
+{
+	for (size_t i(0); i<get_Eb().size(); ++i){
+		for (size_t j(0); j<get_Eb()[i]->get_ErF().size(); ++j){
+			Point position(get_Eb()[i]->get_ErF()[j]->get_position());
+			get_robotF_infos(position, i);
+		}
+	}
+}
+
+void Simulation::draw_robotT()
+{
+	for (size_t i(0); i<get_Eb().size(); ++i){
+		for (size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
+			Point position(get_Eb()[i]->get_ErT()[j]->get_position());
+			get_robotT_infos(position, i);
+		}
+	}
+}
+
+void Simulation::draw_robotC()
+{
+	for (size_t i(0); i<get_Eb().size(); ++i){
+		for (size_t j(0); j<get_Eb()[i]->get_ErC().size(); ++j){
+			Point position(get_Eb()[i]->get_ErC()[j]->get_position());
+			get_robotC_infos(position, i);
 		}
 	}
 }
@@ -256,27 +286,27 @@ void Simulation::draw_liaison()
 
 
 //recevoir les infos relatives aux bases
-int Simulation::conteur_base(){
+int Simulation::compteur_base(){
      return get_Eb().size();
 }
 
-int Simulation::conteur_robotP(int base_numero){
+int Simulation::compteur_robotP(int base_numero){
     return get_Eb()[base_numero]->get_nbP();
 }
 
-int Simulation::conteur_robotF(int base_numero){
+int Simulation::compteur_robotF(int base_numero){
     return get_Eb()[base_numero]->get_nbF();
 }
 
-int Simulation::conteur_robotC(int base_numero){
+int Simulation::compteur_robotC(int base_numero){
     return get_Eb()[base_numero]->get_nbC();
 }
 
-int Simulation::conteur_robotT(int base_numero){
+int Simulation::compteur_robotT(int base_numero){
     return get_Eb()[base_numero]->get_nbT();
 }
 
-int Simulation::conteur_resources(int base_numero){
+double Simulation::compteur_resources(int base_numero){
     return get_Eb()[base_numero]->get_ressources();
 }
 

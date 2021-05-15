@@ -162,11 +162,30 @@ void get_gisement_infos(Point centre, double rayon){
 	graphic_draw_gisement(centre.x, centre.y, rayon,0, 0, 0);
 }
 
-void get_robot_infos(Point centre, int i){
+void get_robotP_infos(Point centre, int i){
 	i = i%5;
     coord_norm(centre);
-    graphic_draw_robot(centre.x, centre.y, i);
+    graphic_draw_robotP(centre.x, centre.y, i);
 }
+
+void get_robotF_infos(Point centre, int i){
+	i = i%5;
+    coord_norm(centre);
+    graphic_draw_robotF(centre.x, centre.y, i);
+}
+
+void get_robotT_infos(Point centre, int i){
+	i = i%5;
+    coord_norm(centre);
+    graphic_draw_robotT(centre.x, centre.y, i);
+}
+
+void get_robotC_infos(Point centre, int i){
+	i = i%5;
+    coord_norm(centre);
+    graphic_draw_robotC(centre.x, centre.y, i);
+}
+
 void get_robot_positionsAB(Point robot_A, Point B)
 {
     double petit_norm(2*getMax());

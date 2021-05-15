@@ -41,9 +41,17 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_top(Gtk::ORIENTATION_HORIZONTAL, 0),
 	m_box_top_left(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_top_right(Gtk::ORIENTATION_VERTICAL, 0),
-	m_box_bottom(Gtk::ORIENTATION_VERTICAL, 0),
-	m_box_bottom_info(Gtk::ORIENTATION_VERTICAL, 0),
-	m_box_bottom_label(Gtk::ORIENTATION_HORIZONTAL, 0),
+	m_box_bottom(Gtk::ORIENTATION_HORIZONTAL, 0),
+	//m_box_bottom_info(Gtk::ORIENTATION_VERTICAL, 0),
+	//m_box_bottom_label(Gtk::ORIENTATION_HORIZONTAL, 0),
+	m_box_bottom_uid(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_nbP(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_nbF(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_nbT(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_nbC(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_resources(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_mission(Gtk::ORIENTATION_VERTICAL, 0),
+	
 	m_box_frame_general(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_frame_toggledisplay(Gtk::ORIENTATION_VERTICAL, 0),
 	m_button_startstop("start"),
@@ -81,7 +89,7 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box.pack_start(m_box_top);
 	m_box_top.pack_start(m_box_top_left, Gtk::PACK_SHRINK);
 	m_box_top.pack_start(m_box_top_right);
-	m_box.pack_start(m_box_bottom);
+	m_box.pack_start(m_box_bottom, Gtk::PACK_SHRINK);
 	
 	m_area.set_size_request(prm.height, prm.width);
 	m_box_top_right.add(m_area);
@@ -99,8 +107,6 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_frame_toggledisplay.pack_start(m_button_togglerange, false, false);
 	m_box_top_left.pack_start(m_frame_toggledisplay, false, false);
 	
-
-	m_box_bottom.pack_start(m_box_bottom_label, Gtk::PACK_SHRINK);	
 	m_frame_Uid.add(m_label_Uid);
 	m_frame_nbP.add(m_label_nbP);
 	m_frame_nbF.add(m_label_nbF);
@@ -108,16 +114,21 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_frame_nbC.add(m_label_nbC);
 	m_frame_ammountresource.add(m_label_amountresource);
 	m_frame_missioncompleteness.add(m_label_missioncompleteness);
-	m_box_bottom_label.pack_start(m_frame_Uid);
-	m_box_bottom_label.pack_start(m_frame_nbP);
-	m_box_bottom_label.pack_start(m_frame_nbF);
-	m_box_bottom_label.pack_start(m_frame_nbT);
-	m_box_bottom_label.pack_start(m_frame_nbC);
-	m_box_bottom_label.pack_start(m_frame_ammountresource);
-	m_box_bottom_label.pack_start(m_frame_missioncompleteness);
-	//m_box_bottom_info.set_vexpand();
-	m_box_bottom.pack_start(m_box_bottom_info, Gtk::PACK_SHRINK);
-	
+	m_box_bottom_uid.pack_start(m_frame_Uid);
+	m_box_bottom_nbP.pack_start(m_frame_nbP);
+	m_box_bottom_nbF.pack_start(m_frame_nbF);
+	m_box_bottom_nbT.pack_start(m_frame_nbT);
+	m_box_bottom_nbC.pack_start(m_frame_nbC);
+	m_box_bottom_resources.pack_start(m_frame_ammountresource);
+	m_box_bottom_mission.pack_start(m_frame_missioncompleteness);
+	m_box_bottom.pack_start(m_box_bottom_uid);
+	m_box_bottom.pack_start(m_box_bottom_nbP);
+	m_box_bottom.pack_start(m_box_bottom_nbF);
+	m_box_bottom.pack_start(m_box_bottom_nbT);
+	m_box_bottom.pack_start(m_box_bottom_nbC);
+	m_box_bottom.pack_start(m_box_bottom_resources);
+	m_box_bottom.pack_start(m_box_bottom_mission);
+
 	m_button_exit.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_exit));
 	m_button_startstop.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_startstop));
 	m_button_step.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_step));
@@ -126,16 +137,22 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_button_togglelink.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglelink));
 	m_button_togglerange.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglerange));
 	Glib::signal_idle().connect( sigc::mem_fun(*this, &SimulationWindow::on_idle) );
-	creation_infos();
 	
-	show_all_children();
+	for (int j(0); j<7; ++j){
+		vector<Gtk::Label*> v;
+		labels_bases.push_back (v);
+	}
 	
 	if (argc == 2){
-		simulation.lecture(argv[1]);	
+		simulation.lecture(argv[1]);
+		creation_infos();	
 		simulation.update_voisin();
 		simulation.connexion();
 		m_area.refresh();
 	}
+	
+	show_all_children();
+	
 }
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
@@ -159,9 +176,12 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	cr->stroke();
 	
 	simulation.draw_base();
-	simulation.draw_robot();
 	simulation.draw_gisement();
 	if (togglelink){simulation.draw_liaison();}
+	simulation.draw_robotP();
+	simulation.draw_robotF();
+	simulation.draw_robotT();
+	simulation.draw_robotC();
     if (togglerange) {simulation.draw_rayon_comm();}
     graphic_draw_rectangle(frame.xMin, frame.xMax, frame.yMin, frame.yMax, dim_max);
     
@@ -257,6 +277,8 @@ void SimulationWindow::on_button_clicked_open()
 			if (!(simulation.get_file_opened())){
 				cout << "fichier ouvert :" << decode_filename(dialog.get_filename()) << endl;
 				simulation.lecture(decode_filename(dialog.get_filename()));
+				creation_infos();	
+				show_all_children();
 				simulation.update_voisin();
 				simulation.connexion();
 				m_area.refresh();
@@ -334,6 +356,10 @@ bool SimulationWindow::on_key_press_event(GdkEventKey * key_event)
 bool SimulationWindow::on_idle()
 {
 	if (started) {
+		simulation.update_voisin();
+		simulation.connexion();
+		simulation.update_robot();
+		m_area.refresh();
 		cout << "mise à jour de la simulation " << ++count << endl;
 	}
 	return true;
@@ -349,18 +375,41 @@ string decode_filename(string name)
 	return newname;
 }
 
-
 void SimulationWindow::creation_infos()
 {
-	for (int i(0) ; i < 3; ++i){
-		numero_base.push_back(unique_ptr<Gtk::Box> (new Gtk::Box(Gtk::ORIENTATION_HORIZONTAL, 0)));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		numero_base[i]->pack_start(*(new Gtk::Label("oui")));
-		m_box_bottom_info.pack_start(*(numero_base[i]));
+	for (int i(0); i< simulation.compteur_base() ; ++i){
+		string uid(to_string(i+1));
+		string nbP(to_string(simulation.compteur_robotP(i)));
+		string nbF(to_string(simulation.compteur_robotF(i)));
+		string nbT(to_string(simulation.compteur_robotT(i)));
+		string nbC(to_string(simulation.compteur_robotC(i)));
+		string resources(to_string(simulation.compteur_resources(i)));
+		string mission((to_string((simulation.compteur_resources(i)/finR)*100))+" %");
+		labels_bases[0].push_back(new Gtk::Label(uid));
+		m_box_bottom_uid.pack_start(*(labels_bases[0][i]));
+		labels_bases[1].push_back(new Gtk::Label(nbP));
+		m_box_bottom_nbP.pack_start(*(labels_bases[1][i]));
+		labels_bases[2].push_back(new Gtk::Label(nbF));
+		m_box_bottom_nbF.pack_start(*(labels_bases[2][i]));
+		labels_bases[3].push_back(new Gtk::Label(nbT));
+		m_box_bottom_nbT.pack_start(*(labels_bases[3][i]));
+		labels_bases[4].push_back(new Gtk::Label(nbC));
+		m_box_bottom_nbC.pack_start(*(labels_bases[4][i]));
+		labels_bases[5].push_back(new Gtk::Label(resources));
+		m_box_bottom_resources.pack_start(*(labels_bases[5][i]));
+		labels_bases[6].push_back(new Gtk::Label(mission));
+		m_box_bottom_mission.pack_start(*(labels_bases[6][i]));
 	}
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

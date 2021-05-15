@@ -33,7 +33,10 @@ class Simulation
 		void graphic_robot();
 		void draw_base();
 		void draw_gisement();
-		void draw_robot();
+		void draw_robotP();
+		void draw_robotF();
+		void draw_robotT();
+		void draw_robotC();
 		void draw_liaison();
 		void update_remote();
 		void update_remote_p(size_t i, size_t j);
@@ -43,12 +46,12 @@ class Simulation
 		
         void draw_rayon_comm();
     
-        int conteur_base();
-        int conteur_robotP(int base_numero);
-        int conteur_robotC(int base_numero);
-        int conteur_robotT(int base_numero);
-        int conteur_robotF(int base_numero);
-        int conteur_resources(int base_numero);
+        int compteur_base();
+        int compteur_robotP(int base_numero);
+        int compteur_robotC(int base_numero);
+        int compteur_robotT(int base_numero);
+        int compteur_robotF(int base_numero);
+        double compteur_resources(int base_numero);
     
 };
 

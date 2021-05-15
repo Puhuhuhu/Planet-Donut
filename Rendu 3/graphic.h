@@ -9,7 +9,13 @@ void graphic_draw_gisement(double x, double y, double rayon, double r, double g,
 
 void graphic_draw_base(double x, double y, double rayon, int i);
 
-void graphic_draw_robot(double x, double y, int i);
+void graphic_draw_robotP(double x, double y, int i);
+
+void graphic_draw_robotF(double x, double y, int i);
+
+void graphic_draw_robotT(double x, double y, int i);
+
+void graphic_draw_robotC(double x, double y, int i);
 
 void graphic_draw_line(double robotA_x, double robotA_y, double robotB_x, double robotB_y);
 
