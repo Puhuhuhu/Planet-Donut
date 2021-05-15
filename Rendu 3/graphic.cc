@@ -91,7 +91,7 @@ void graphic_draw_robot(double x, double y, int i)
 
 void graphic_draw_line(double robotA_x, double robotA_y, double robotB_x, double robotB_y){
     (*ptcr)->set_line_width(2.0);
-    (*ptcr)->set_source_rgb(1,0,0.5);
+    (*ptcr)->set_source_rgb(0.8, 0, 1);
     (*ptcr)->move_to(robotA_x,robotA_y);
     (*ptcr)->line_to(robotB_x, robotB_y);
     (*ptcr)->stroke();

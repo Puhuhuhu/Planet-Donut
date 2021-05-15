@@ -12,6 +12,8 @@ using namespace std;
 
 static Simulation simulation;
 
+static bool togglelink(0);
+
 static void orthographic_projection(const Cairo::RefPtr<Cairo::Context>& cr, 
 									Frame frame)
 {
@@ -34,15 +36,15 @@ SimulationWindow::~SimulationWindow() {}
 SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	count(0),
 	started(0),
-	m_box(Gtk::ORIENTATION_VERTICAL, 10),
-	m_box_top(Gtk::ORIENTATION_HORIZONTAL, 10),
-	m_box_top_left(Gtk::ORIENTATION_VERTICAL, 10),
-	m_box_top_right(Gtk::ORIENTATION_VERTICAL, 10),
-	m_box_bottom(Gtk::ORIENTATION_VERTICAL, 10),
-	m_box_bottom_info(Gtk::ORIENTATION_VERTICAL, 10),
+	m_box(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_top(Gtk::ORIENTATION_HORIZONTAL, 0),
+	m_box_top_left(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_top_right(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_bottom_info(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_bottom_label(Gtk::ORIENTATION_HORIZONTAL, 0),
-	m_box_frame_general(Gtk::ORIENTATION_VERTICAL, 10),
-	m_box_frame_toggledisplay(Gtk::ORIENTATION_VERTICAL, 10),
+	m_box_frame_general(Gtk::ORIENTATION_VERTICAL, 0),
+	m_box_frame_toggledisplay(Gtk::ORIENTATION_VERTICAL, 0),
 	m_button_startstop("start"),
 	m_button_step("step"),
 	m_button_exit("exit"),
@@ -84,17 +86,17 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_top_right.add(m_area);
 	
 	m_frame_general.add(m_box_frame_general);
-	m_box_frame_general.pack_start(m_button_exit);
-	m_box_frame_general.pack_start(m_button_open);
-	m_box_frame_general.pack_start(m_button_save);
-	m_box_frame_general.pack_start(m_button_startstop);
-	m_box_frame_general.pack_start(m_button_step);
-	m_box_top_left.pack_start(m_frame_general);
+	m_box_frame_general.pack_start(m_button_exit, false, false);
+	m_box_frame_general.pack_start(m_button_open, false, false);
+	m_box_frame_general.pack_start(m_button_save, false, false);
+	m_box_frame_general.pack_start(m_button_startstop, false, false);
+	m_box_frame_general.pack_start(m_button_step, false, false);
+	m_box_top_left.pack_start(m_frame_general, false, false);
 	
 	m_frame_toggledisplay.add(m_box_frame_toggledisplay);
-	m_box_frame_toggledisplay.pack_start(m_button_togglelink);
-	m_box_frame_toggledisplay.pack_start(m_button_togglerange);
-	m_box_top_left.pack_start(m_frame_toggledisplay);
+	m_box_frame_toggledisplay.pack_start(m_button_togglelink, false, false);
+	m_box_frame_toggledisplay.pack_start(m_button_togglerange, false, false);
+	m_box_top_left.pack_start(m_frame_toggledisplay, false, false);
 	
 
 	m_box_bottom.pack_start(m_box_bottom_label, Gtk::PACK_SHRINK);	
@@ -112,7 +114,7 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_bottom_label.pack_start(m_frame_nbC);
 	m_box_bottom_label.pack_start(m_frame_ammountresource);
 	m_box_bottom_label.pack_start(m_frame_missioncompleteness);
-	
+	//m_box_bottom_info.set_vexpand();
 	m_box_bottom.pack_start(m_box_bottom_info);
 	
 	m_button_exit.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_exit));
@@ -120,12 +122,16 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_button_step.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_step));
 	m_button_open.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_open));
 	m_button_save.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_save));
+	m_button_togglelink.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglelink));
 	Glib::signal_idle().connect( sigc::mem_fun(*this, &SimulationWindow::on_idle) );
 	
 	show_all_children();
 	
 	if (argc == 2){
 		simulation.lecture(argv[1]);	
+		simulation.update_voisin();
+		simulation.connexion();
+		m_area.refresh();
 	}
 }
 
@@ -141,7 +147,7 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	xc = width / 2;
 	yc = height / 2;
 	
-	cr->set_line_width(10);
+	cr->set_line_width(5);
 	cr->set_source_rgb(0.1, 0.1, 0.1);
 	cr->move_to(-dim_max, dim_max);
 	cr->line_to(dim_max, dim_max);
@@ -155,6 +161,9 @@ bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 	simulation.draw_base();
 	simulation.draw_robot();
 	simulation.draw_gisement();
+	if (togglelink){
+		simulation.draw_liaison();
+	}
 	return true;
 }
 
@@ -247,6 +256,9 @@ void SimulationWindow::on_button_clicked_open()
 			if (!(simulation.get_file_opened())){
 				cout << "fichier ouvert :" << decode_filename(dialog.get_filename()) << endl;
 				simulation.lecture(decode_filename(dialog.get_filename()));
+				simulation.update_voisin();
+				simulation.connexion();
+				m_area.refresh();
 			}else{
 				cout << "un fichier est déjà ouvert" << endl;
 			}
@@ -287,6 +299,13 @@ void SimulationWindow::on_button_clicked_save()
 			break;
 	}
 }
+
+void SimulationWindow::on_button_clicked_togglelink()
+{
+	togglelink = !togglelink;
+	m_area.refresh();
+}
+	
 
 bool SimulationWindow::on_key_press_event(GdkEventKey * key_event)
 {

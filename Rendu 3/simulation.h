@@ -34,7 +34,13 @@ class Simulation
 		void draw_base();
 		void draw_gisement();
 		void draw_robot();
-		void update_remote()
+		void draw_liaison();
+		void update_remote();
+		void update_remote_p(size_t i, size_t j);
+		void update_remote_f(size_t i, size_t j);
+		void update_remote_t(size_t i, size_t j);
+		void update_remote_c(size_t i, size_t j);
+		
 };
 
 
