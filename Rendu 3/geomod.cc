@@ -120,46 +120,86 @@ bool cercle_cercle(Point &p1, const double &r1, Point &p2, const double &r2)
 void get_base_infos(Point centre, double rayon, int i){
 	i = i%5;
     coord_norm(centre);
-    Cercle base_est({rayon,centre}), base_ouest({rayon,centre}), base_nord({rayon,centre}), base_sud({rayon,centre});
+    graphic_draw_base(centre.x, centre.y, rayon, i);
+    Point base_est(centre), base_ouest(centre), base_nord(centre), base_sud(centre), base_ne(centre), base_no(centre), base_se(centre), base_so(centre);
     if((centre.x + 10*rayon ) > max) {
-		base_est.centre.x = (centre.x)- 2*max;
-		graphic_draw_base(base_est.centre.x, base_est.centre.y, base_est.rayon, i);
+		base_ouest.x = centre.x - 2*max;
+		graphic_draw_base(base_ouest.x, centre.y, 10*rayon, i);
 	}
     if((centre.x - 10*rayon ) < -max) {
-		base_ouest.centre.x = (centre.x) + 2*max;
-		graphic_draw_base(base_ouest.centre.x, base_ouest.centre.y, base_ouest.rayon, i);
+		base_est.x = centre.x + 2*max;
+		graphic_draw_base(base_est.x, centre.y, 10*rayon, i);
 	}
     if((centre.y + 10*rayon ) > max) { 
-		base_sud.centre.x = (centre.y)- 2*max;
-		graphic_draw_base(base_sud.centre.x, base_sud.centre.y, base_sud.rayon, i);
+		base_sud.y = centre.y - 2*max;
+		graphic_draw_base(centre.x, base_sud.y, 10*rayon, i);
 	}
     if((centre.y - 10*rayon ) < -max) { 
-		base_nord.centre.x = (centre.y) + 2*max;
-		graphic_draw_base(base_nord.centre.x, base_nord.centre.y, base_nord.rayon, i);
+		base_nord.y = centre.y + 2*max;
+		graphic_draw_base(centre.x, base_nord.y, rayon, i);
 	}
-    graphic_draw_base(centre.x, centre.y, rayon, i);
+	if (((centre.x + 10*rayon ) > max) and ((centre.y + 10*rayon) > max)){
+		base_so.x = centre.x - 2*max;
+		base_so.y = centre.y - 2*max;
+		graphic_draw_base(base_so.x, base_so.y, rayon, i);
+	}
+	if (((centre.x - 10*rayon ) > max) and ((centre.y + 10*rayon) > max)){
+		base_se.x = centre.x + 2*max;
+		base_se.y = centre.y - 2*max;
+		graphic_draw_base(base_se.x, base_se.y, rayon, i);
+	}
+	if (((centre.x - 10*rayon ) > max) and ((centre.y - 10*rayon) > max)){
+		base_ne.x = centre.x + 2*max;
+		base_ne.y = centre.y + 2*max;
+		graphic_draw_base(base_ne.x, base_ne.y, rayon, i);
+	}
+	if (((centre.x + 10*rayon ) > max) and ((centre.y - 10*rayon) > max)){
+		base_no.x = centre.x - 2*max;
+		base_no.y = centre.y + 2*max;
+		graphic_draw_base(base_no.x, base_no.y, rayon, i);
+	}
 }
 
 void get_gisement_infos(Point centre, double rayon){
     coord_norm(centre);
-    Cercle gisement_est({rayon,centre}), gisement_ouest({rayon,centre}), gisement_nord({rayon,centre}), gisement_sud({rayon,centre});
+    graphic_draw_gisement(centre.x, centre.y, rayon,0, 0, 0);
+    Point gisement_est(centre), gisement_ouest(centre), gisement_nord(centre), gisement_sud(centre), gisement_ne(centre), gisement_no(centre), gisement_se(centre), gisement_so(centre);
     if((centre.x + rayon ) > max) {
-		gisement_est.centre.x = (centre.x)- 2*max;
-		graphic_draw_gisement(gisement_est.centre.x, gisement_est.centre.y, gisement_est.rayon, 0, 0, 0);
+		gisement_ouest.x = centre.x - 2*max;
+		graphic_draw_gisement(gisement_ouest.x, centre.y, rayon, 0, 0, 0);		
 	}
     if((centre.x - rayon ) < -max) { 
-		gisement_ouest.centre.x = (centre.x) + 2*max;
-		graphic_draw_gisement(gisement_ouest.centre.x, gisement_ouest.centre.y, gisement_ouest.rayon, 0, 0, 0);
+		gisement_est.x = centre.x + 2*max;
+		graphic_draw_gisement(gisement_ouest.x, centre.y, rayon, 0, 0, 0);
 	}
     if((centre.y + rayon ) > max) { 
-		gisement_sud.centre.x = (centre.y)- 2*max;
-		graphic_draw_gisement(gisement_sud.centre.x, gisement_sud.centre.y, gisement_sud.rayon, 0, 0, 0);
+		gisement_sud.y = centre.y - 2*max;
+		graphic_draw_gisement(centre.x, gisement_sud.y, rayon, 0, 0, 0);
 	}
     if((centre.y - rayon ) < -max) { 
-		gisement_nord.centre.x = (centre.y) + 2*max;
-		graphic_draw_gisement(gisement_nord.centre.x, gisement_nord.centre.y, gisement_nord.rayon, 0, 0, 0);
+		gisement_nord.y = centre.y + 2*max;
+		graphic_draw_gisement(centre.x, gisement_nord.y, rayon, 0, 0, 0);
 	}
-	graphic_draw_gisement(centre.x, centre.y, rayon,0, 0, 0);
+	if (((centre.x + rayon ) > max) and ((centre.y + rayon) > max)){
+		gisement_so.x = centre.x - 2*max;
+		gisement_so.y = centre.y - 2*max;
+		graphic_draw_gisement(gisement_so.x, gisement_so.y, rayon, 0, 0, 0);
+	}
+	if (((centre.x - rayon ) < -max) and ((centre.y + rayon) > max)){
+		gisement_se.x = centre.x + 2*max;
+		gisement_se.y = centre.y - 2*max;
+		graphic_draw_gisement(gisement_se.x, gisement_se.y, rayon, 0, 0, 0);
+	}
+	if (((centre.x - rayon ) < -max) and ((centre.y - rayon) < -max)){
+		gisement_ne.x = centre.x + 2*max;
+		gisement_ne.y = centre.y + 2*max;
+		graphic_draw_gisement(gisement_ne.x, gisement_ne.y, rayon, 0, 0, 0);
+	}
+	if (((centre.x + rayon ) > max) and ((centre.y - rayon) < -max)){
+		gisement_no.x = centre.x - 2*max;
+		gisement_no.y = centre.y + 2*max;
+		graphic_draw_gisement(gisement_no.x, gisement_no.y, rayon, 0, 0, 0);
+	}
 }
 
 void get_robotP_infos(Point centre, int i){
