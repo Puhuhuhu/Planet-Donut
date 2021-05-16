@@ -347,7 +347,23 @@ void Simulation::update_remote_p(size_t i, size_t j)
 void Simulation::update_remote_f(size_t i, size_t j){}
 void Simulation::update_remote_t(size_t i, size_t j){}
 void Simulation::update_remote_c(size_t i, size_t j){}
-	
+
+void move_to_dest(Robot* robot){
+    Vect v = distanceAB(robot-> get_position(), robot-> get_position_but());
+    double x(robot->get_position().x);
+    double y(robot->get_position().y);
+    x = x + (deltaD*v.x)/v.norme;
+    y = y +(deltaD*v.x)/v.norme;
+}
+//fonction qui cherche si un gisement existe en la position du robot
+void trouve_gisement(Robot* robot, Gisement* gisment){
+    for(int g; g < get_Eg().size; ++{
+        if (point_cercle(robot->get_position(),  gisement->get_centre(), gisement->get_rayon())){
+            robot->set_fd(true);
+            position_gisement_trouve(gisement->get_centre().x,gisement->get_centre().y)
+        }
+    }
+}
 
 //Getter
 bool Simulation::get_file_opened() {return file_opened;}

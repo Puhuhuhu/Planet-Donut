@@ -52,7 +52,8 @@ class Simulation
         int compteur_robotT(int base_numero);
         int compteur_robotF(int base_numero);
         double compteur_resources(int base_numero);
-    
+        
+        void trouve_gisement(Robot* robot, Gisement gisment);
 };
 
 
