@@ -68,9 +68,18 @@ class RobotP : public Robot{
 class RobotF : public Robot{
     private :
 		bool used;
+		bool transp_envoye;
+		double ressources_recup;
+		bool gisement_vide;
     public:
+		bool get_gisement_vide();
+		void set_gisement_vide(bool g);
+		bool get_transp_envoye();
+		void set_transp_envoye(bool t);
 		bool get_used();
         void set_used(bool u);
+        void set_ressources_recup(double r);
+        double get_ressources_recup();
 		RobotF(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint);
 		
@@ -80,8 +89,15 @@ class RobotT : public Robot{
     private:
         bool retour;
         bool used;
+        RobotF* robotF;
+        double ressources_transp;
     public:
+		RobotF* get_robotF();
+		double get_ressources_transp();
+		void set_ressources_transp(double r);
+		void set_robotF (RobotF* r);
         bool get_rt();
+        void set_rt(bool r);
         bool get_used();
         void set_used(bool u);
         RobotT(int uid, double dp, double x, double y, double xb, 

@@ -119,7 +119,7 @@ RobotP::RobotP(int uid, double dp, double x, double y, double xb,
 
 RobotF::RobotF(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint)
-	: Robot(uid, dp, x, y, xb, yb, atteint) {used = false;}
+	: Robot(uid, dp, x, y, xb, yb, atteint) {used = false; ressources_recup = 0; transp_envoye = false; gisement_vide = false;}
 
 RobotT::RobotT(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint, bool retour)
@@ -237,5 +237,27 @@ void RobotT::set_used(bool u) {used = u;}
 bool RobotF::get_used() {return used;}
 
 void RobotF::set_used(bool u) {used = u;}
+
+void RobotF::set_ressources_recup(double r) {ressources_recup = r;}
+
+double RobotF::get_ressources_recup() {return ressources_recup;}
+
+bool RobotF::get_transp_envoye() {return transp_envoye;}
+
+void RobotF::set_transp_envoye(bool t) {transp_envoye = t;}
+
+RobotF* RobotT::get_robotF() {return robotF;}
+
+void RobotT::set_robotF(RobotF* r) {robotF = r;}
+
+void RobotT::set_rt(bool r) {retour = r;}
+
+double RobotT::get_ressources_transp() {return ressources_transp;}
+
+void RobotT::set_ressources_transp(double r) {ressources_transp = r;}
+
+bool RobotF::get_gisement_vide() {return gisement_vide;}
+
+void RobotF::set_gisement_vide(bool g) {gisement_vide = g;}
 	
 	

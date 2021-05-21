@@ -80,7 +80,7 @@ void Gisement::intersection(){
 Gisement::Gisement(double x, double y, double rayon, double capacite) 
 				 : centre({x, y}), rayon(rayon), capacite(capacite) {}			 
 
-//Getters
+//Getters setters
 double& Gisement::get_rayon() {return rayon;}   
 
 double Gisement::get_capacite() {return capacite;}
@@ -88,3 +88,5 @@ double Gisement::get_capacite() {return capacite;}
 Point& Gisement::get_centre() {return centre;}
 
 vector<unique_ptr<Gisement>>& get_Eg() {return Eg;}
+
+void Gisement::set_capacite(double c) {capacite = c;}

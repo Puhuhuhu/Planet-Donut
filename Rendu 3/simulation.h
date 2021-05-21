@@ -53,10 +53,14 @@ class Simulation
         int compteur_robotT(int base_numero);
         int compteur_robotF(int base_numero);
         double compteur_resources(int base_numero);
-        void move_to_dest(RobotP* robot);
+        void move_to_dest(Robot* robot);
         void prosp_changement_but(RobotP* robot);   
         void trouve_gisement(RobotP* robot);
         void signal_gisement(RobotP* robot, size_t i);
+        void sur_gisement(RobotF* robot);
+        void envoyer_robot_transp(RobotF* robot, size_t i);
+        void forage(RobotT* robot, RobotF* robotF);
+        void donner_ressources(RobotT* robot, size_t i);
 };
 
 

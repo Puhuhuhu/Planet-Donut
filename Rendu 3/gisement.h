@@ -17,6 +17,7 @@ class Gisement
 		Gisement(double x, double y, double rayon, double capacite);
 		double& get_rayon();
 		double get_capacite();
+		void set_capacite(double c);
 		Point& get_centre();
 		void intersection();
 		
