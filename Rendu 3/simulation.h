@@ -57,6 +57,7 @@ class Simulation
         void prosp_changement_but(RobotP* robot);   
         void trouve_gisement(RobotP* robot);
         void signal_gisement(RobotP* robot, size_t i);
+        void enregister_ancienne_pos(RobotP* robot);
 };
 
 
