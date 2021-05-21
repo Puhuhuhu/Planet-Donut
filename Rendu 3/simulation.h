@@ -55,6 +55,8 @@ class Simulation
         void move_to_dest(RobotP* robot);
         void prosp_changement_but(RobotP* robot);
     
+        
+        void trouve_gisement(Robot* robot, Gisement gisment);
 };
 
 

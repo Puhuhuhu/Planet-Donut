@@ -424,6 +424,15 @@ void Simulation::prosp_changement_but(RobotP* robot)
 	}
 	++cycle;
 	robot->set_cycle(cycle);
+	
+//fonction qui cherche si un gisement existe en la position du robot
+void trouve_gisement(Robot* robot, Gisement* gisment){
+    for(int g; g < get_Eg().size; ++{
+        if (point_cercle(robot->get_position(),  gisement->get_centre(), gisement->get_rayon())){
+            robot->set_fd(true);
+            position_gisement_trouve(gisement->get_centre().x,gisement->get_centre().y)
+        }
+    }
 }
 
 //Getter

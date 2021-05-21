@@ -159,6 +159,16 @@ bool RobotP::get_rt(){
 bool RobotP::get_fd(){
     return found;
 }
+//donner
+void RobotP::set_fd(bool fd){
+    found = fd;
+}
+
+void set_position_gisement_trouve(double x, double y){
+    position_gisement.x = x;
+    position_gisement.y = y;
+}
+
 
 Point RobotP::get_position_gisement(){
     return position_gisement;

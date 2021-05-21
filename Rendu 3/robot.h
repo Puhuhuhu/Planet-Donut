@@ -55,6 +55,9 @@ class RobotP : public Robot{
         Point get_position_gisement();
         double get_rg();
         double get_cg();
+//    prendre
+        void set_fd(bool fd);
+        void set_position_gisement_trouve(double x, double y);
         RobotP(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint, bool retour, bool found, double xg, double yg, double rayong, 
                double capaciteg);
