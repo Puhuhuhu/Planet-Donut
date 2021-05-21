@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 #include "base.h"
+#include "gisement.h"
 #include <string>
 #include <memory>
 
@@ -53,10 +54,9 @@ class Simulation
         int compteur_robotF(int base_numero);
         double compteur_resources(int base_numero);
         void move_to_dest(RobotP* robot);
-        void prosp_changement_but(RobotP* robot);
-    
-        
-        void trouve_gisement(Robot* robot, Gisement gisment);
+        void prosp_changement_but(RobotP* robot);   
+        void trouve_gisement(RobotP* robot);
+        void signal_gisement(RobotP* robot, size_t i);
 };
 
 

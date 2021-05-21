@@ -81,10 +81,10 @@ Gisement::Gisement(double x, double y, double rayon, double capacite)
 				 : centre({x, y}), rayon(rayon), capacite(capacite) {}			 
 
 //Getters
-double Gisement::get_rayon() {return rayon;}   
+double& Gisement::get_rayon() {return rayon;}   
 
 double Gisement::get_capacite() {return capacite;}
 
-Point Gisement::get_centre() {return centre;}
+Point& Gisement::get_centre() {return centre;}
 
 vector<unique_ptr<Gisement>>& get_Eg() {return Eg;}

@@ -15,9 +15,9 @@ class Gisement
 		
 	public :
 		Gisement(double x, double y, double rayon, double capacite);
-		double get_rayon();
+		double& get_rayon();
 		double get_capacite();
-		Point get_centre();
+		Point& get_centre();
 		void intersection();
 		
 };

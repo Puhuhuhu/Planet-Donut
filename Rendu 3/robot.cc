@@ -119,11 +119,11 @@ RobotP::RobotP(int uid, double dp, double x, double y, double xb,
 
 RobotF::RobotF(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint)
-	: Robot(uid, dp, x, y, xb, yb, atteint) {}
+	: Robot(uid, dp, x, y, xb, yb, atteint) {used = false;}
 
 RobotT::RobotT(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint, bool retour)
-	: Robot(uid, dp, x, y, xb, yb, atteint), retour(retour) {}
+	: Robot(uid, dp, x, y, xb, yb, atteint), retour(retour) {used = false;}
 	
 
 RobotC::RobotC(int uid, double dp, double x, double y, double xb, 
@@ -164,13 +164,13 @@ void RobotP::set_fd(bool fd){
     found = fd;
 }
 
-void set_position_gisement_trouve(double x, double y){
+void RobotP::set_position_gisement(double x, double y){
     position_gisement.x = x;
     position_gisement.y = y;
 }
 
 
-Point RobotP::get_position_gisement(){
+Point& RobotP::get_position_gisement(){
     return position_gisement;
 }
 
@@ -225,6 +225,17 @@ int RobotP::get_cycle() {return cycle;}
 void RobotP::set_cycle(int c) {cycle = c;}
 	
 void Robot::set_at(bool a) {atteint = a;}
-	
+
+void RobotP::set_capaciteg(double c) {capaciteg = c;}
+
+void RobotP::set_rayong(double r) {rayong = r;}
+
+bool RobotT::get_used() {return used;}
+
+void RobotT::set_used(bool u) {used = u;}
+
+bool RobotF::get_used() {return used;}
+
+void RobotF::set_used(bool u) {used = u;}
 	
 	

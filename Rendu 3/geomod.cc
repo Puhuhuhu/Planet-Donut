@@ -226,6 +226,7 @@ void get_robotC_infos(Point centre, int i){
     graphic_draw_robotC(centre.x, centre.y, i);
 }
 
+
 void get_robot_positionsAB(Point robot_A, Point B)
 {
     double petit_norm(2*getMax());
@@ -251,9 +252,10 @@ void get_robot_positionsAB(Point robot_A, Point B)
     graphic_draw_line(robot_A.x, robot_A.y, robot_B.x, robot_B.y);
 }
 
+
 void get_robot_com_infos(Point centre){
     coord_norm(centre);
-    Point robot_com_est(centre), robot_com_ouest(centre), robot_com_nord(centre), robot_com_sud(centre);
+    Point robot_com_est(centre), robot_com_ouest(centre), robot_com_nord(centre), robot_com_sud(centre), robot_com_so(centre), robot_com_se(centre), robot_com_no(centre), robot_com_ne(centre);
     if((centre.x + rayon_comm ) > max) {
         robot_com_est.x = (centre.x)- 2*max;
         graphic_draw_robot_comm(robot_com_est.x, centre.y);
@@ -273,6 +275,25 @@ void get_robot_com_infos(Point centre){
         robot_com_nord.y = (centre.y) + 2*max;
         graphic_draw_robot_comm(centre.x, robot_com_nord.y);
     }
-    
+    if (((centre.x + rayon_comm ) > max) and ((centre.y + rayon_comm) > max)){
+		robot_com_so.x = centre.x - 2*max;
+		robot_com_so.y = centre.y - 2*max;
+		graphic_draw_robot_comm(robot_com_so.x, robot_com_so.y);
+	}
+	if (((centre.x - rayon_comm ) < -max) and ((centre.y + rayon_comm) > max)){
+		robot_com_se.x = centre.x + 2*max;
+		robot_com_se.y = centre.y - 2*max;
+		graphic_draw_robot_comm(robot_com_se.x, robot_com_se.y);
+	}
+	if (((centre.x - rayon_comm ) < -max) and ((centre.y - rayon_comm) < -max)){
+		robot_com_ne.x = centre.x + 2*max;
+		robot_com_ne.y = centre.y + 2*max;
+		graphic_draw_robot_comm(robot_com_ne.x, robot_com_ne.y);
+	}
+	if (((centre.x + rayon_comm ) > max) and ((centre.y - rayon_comm) < -max)){
+		robot_com_no.x = centre.x - 2*max;
+		robot_com_no.y = centre.y + 2*max;
+		graphic_draw_robot_comm(robot_com_no.x, robot_com_no.y);
+	}    
     graphic_draw_robot_comm(centre.x, centre.y);
 }

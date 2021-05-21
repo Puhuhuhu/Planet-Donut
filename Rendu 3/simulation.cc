@@ -351,16 +351,19 @@ void Simulation::update_remote_p(size_t i, size_t j)
 			robot->set_rt(true);
 		}
 		if (robot->get_at()){ //si atteint son but
-			//trouver gisement
-			if (!(robot->get_fd())){ //si trouve rien, change son but
+			trouve_gisement(robot); //trouver gisement
+			
+			if (!(robot->get_fd())){  //si trouve rien, change son but
 				prosp_changement_but(robot);
+				
 			}else{
-				//recupère données, signal, change de but
+				cout << "gisement trouvé" << endl; //recupère données, signal, change de but
+				prosp_changement_but(robot);
 			}
 		}else{ //si pas atteint son but
-			//trouver gisement
+			trouve_gisement(robot);
 			if (robot->get_fd()){ //si trouve 
-				//recupère données, signal, continue vers son but
+				cout << "gisement trouvé" << endl; //recupère données, signal, continue vers son but
 			}//sinon, continue vers son but
 		}
 	}
@@ -424,16 +427,46 @@ void Simulation::prosp_changement_but(RobotP* robot)
 	}
 	++cycle;
 	robot->set_cycle(cycle);
+}
 	
 //fonction qui cherche si un gisement existe en la position du robot
-void trouve_gisement(Robot* robot, Gisement* gisment){
-    for(int g; g < get_Eg().size; ++{
-        if (point_cercle(robot->get_position(),  gisement->get_centre(), gisement->get_rayon())){
+
+void Simulation::trouve_gisement(RobotP* robot){
+    for(size_t g(0); g < get_Eg().size(); ++g){
+        if (point_cercle(robot->get_position(),  get_Eg()[g]->get_centre(), get_Eg()[g]->get_rayon())){
             robot->set_fd(true);
-            position_gisement_trouve(gisement->get_centre().x,gisement->get_centre().y)
+            robot->set_position_gisement(get_Eg()[g]->get_centre().x, get_Eg()[g]->get_centre().y);
+            robot->set_rayong(get_Eg()[g]->get_rayon());
+            robot->set_capaciteg(get_Eg()[g]->get_capacite());
         }
     }
 }
+
+void Simulation::signal_gisement(RobotP* robot, size_t i)
+{
+	size_t tailleF(get_Eb()[i]->get_ErF().size());
+	for (int j(0); i<tailleF; ++j){
+		RobotF* robotF (&(*(get_Eb()[i]->get_ErF()[j])));
+		Vect v(distanceAB(robot->get_position_gisement(), robotF->get_position()));
+		if ((v.norme >= (maxD_forage - robotF->get_dp())) and (!(robotF->get_used()))){
+			robotF->set_position_but(robot->get_position_gisement());
+			robotF->set_used(true);
+			break;
+		}		
+	}
+	size_t tailleT(get_Eb()[i]->get_ErT().size());
+	for (int j(0); j<tailleT; ++j){
+		RobotT* robotT (&(*(get_Eb()[i]->get_ErT()[j])));
+		Vect v(distanceAB(robot->get_position_gisement(), robotT->get_position()));
+		if ((v.norme >= (maxD_transp - robotT->get_dp())) and (!(robotT->get_used()))){
+			robotT->set_position_but(robot->get_position_gisement());
+			robotT->set_used(true);
+			break;
+		}
+	}
+	robot->set_fd(false);
+}
+	
 
 //Getter
 bool Simulation::get_file_opened() {return file_opened;}

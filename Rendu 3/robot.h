@@ -52,12 +52,14 @@ class RobotP : public Robot{
         bool get_rt();
         void set_rt(bool r);
         bool get_fd();
-        Point get_position_gisement();
+        Point& get_position_gisement();
         double get_rg();
         double get_cg();
 //    prendre
         void set_fd(bool fd);
-        void set_position_gisement_trouve(double x, double y);
+        void set_position_gisement(double x, double y);
+        void set_rayong(double r);
+        void set_capaciteg(double c);
         RobotP(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint, bool retour, bool found, double xg, double yg, double rayong, 
                double capaciteg);
@@ -65,7 +67,10 @@ class RobotP : public Robot{
 
 class RobotF : public Robot{
     private :
+		bool used;
     public:
+		bool get_used();
+        void set_used(bool u);
 		RobotF(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint);
 		
@@ -74,8 +79,11 @@ class RobotF : public Robot{
 class RobotT : public Robot{
     private:
         bool retour;
+        bool used;
     public:
         bool get_rt();
+        bool get_used();
+        void set_used(bool u);
         RobotT(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint, bool retour);
 };
