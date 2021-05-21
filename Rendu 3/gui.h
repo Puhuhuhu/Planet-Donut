@@ -62,6 +62,7 @@ class SimulationWindow : public Gtk::Window
 		MyArea m_area;
 		std::vector<std::vector<Gtk::Label*>> labels_bases;
 		void creation_infos();
+		void actualisation_infos();
 		
 		
 	private:

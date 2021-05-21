@@ -115,7 +115,7 @@ RobotP::RobotP(int uid, double dp, double x, double y, double xb,
                double yb, bool atteint, bool retour, bool found,
                double xg, double yg, double rayong, double capaciteg)
 	: Robot(uid, dp, x, y, xb, yb, atteint), position_gisement({xg, yg}), 
-	  rayong(rayong), capaciteg(capaciteg), retour(retour), found(found) {}
+	  rayong(rayong), capaciteg(capaciteg), retour(retour), found(found) {cycle = 0;}
 
 RobotF::RobotF(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint)
@@ -144,7 +144,7 @@ Point& Robot::get_position(){
 	return position;
 }
     
-Point Robot::get_position_but(){
+Point& Robot::get_position_but(){
 	return position_but;
 }
     
@@ -203,11 +203,18 @@ void Robot::set_position_but(double x, double y)
 	position_but.y = y;
 }
 	
+void Robot::set_position_but(Point but)
+{
+	position_but = but;
+}
+
+void RobotP::set_rt(bool r) {retour = r;}
+
+int RobotP::get_cycle() {return cycle;}
+
+void RobotP::set_cycle(int c) {cycle = c;}
 	
-	
-	
-	
-	
+void Robot::set_at(bool a) {atteint = a;}
 	
 	
 	

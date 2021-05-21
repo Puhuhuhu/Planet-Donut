@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -262,6 +263,7 @@ void Simulation::draw_rayon_comm()
     }
 }
 
+/*
 void Simulation::update_robot()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
@@ -270,6 +272,7 @@ void Simulation::update_robot()
 		}
 	}
 }
+*/
 
 void Simulation::draw_liaison()
 {
@@ -314,6 +317,7 @@ double Simulation::compteur_resources(int base_numero){
 
 void Simulation::update_remote()
 {
+	cout << "update remote" << endl;
 	for (size_t i(0); i<get_Eb().size(); ++i){
 		for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
 			if (get_Eb()[i]->get_ErP()[j]->get_connect()){
@@ -340,14 +344,87 @@ void Simulation::update_remote()
 
 void Simulation::update_remote_p(size_t i, size_t j)
 {
-	RobotP* robot(&(*(get_Eb()[i]->get_ErP()[j])));
-	if (robot->get_dp() > maxD_prosp){}
+	RobotP* robot(&(*(get_Eb()[i]->get_ErP()[j]))); //creation pointeur
+	if (robot->get_dp() > maxD_prosp){}  //si distance max atteinte, ne bouge plus
+	else{
+		if (robot->get_dp() > (maxD_prosp - dim_max * sqrt(2))){ //condition pour maintenance
+			robot->set_rt(true);
+		}
+		if (robot->get_at()){ //si atteint son but
+			//trouver gisement
+			if (!(robot->get_fd())){ //si trouve rien, change son but
+				prosp_changement_but(robot);
+			}else{
+				//recupère données, signal, change de but
+			}
+		}else{ //si pas atteint son but
+			//trouver gisement
+			if (robot->get_fd()){ //si trouve 
+				//recupère données, signal, continue vers son but
+			}//sinon, continue vers son but
+		}
+	}
+	if (robot->get_rt()){ //si retour = true, position but deviens le centre de la base
+		Point but(get_Eb()[i]->get_centre());
+		robot->set_position_but(but);
+	}	
+	move_to_dest(robot);
+	if (egalite(robot->get_position(), robot->get_position_but())){
+		robot->set_at(true);
+	}else{
+		robot->set_at(false);
+	}
+	cout << robot->get_dp() << " " << robot->get_cycle() %4 << " " << robot->get_at() <<  endl;
 }
 	
 void Simulation::update_remote_f(size_t i, size_t j){}
 void Simulation::update_remote_t(size_t i, size_t j){}
 void Simulation::update_remote_c(size_t i, size_t j){}
 	
+	
+void Simulation::move_to_dest(RobotP* robot)
+{
+    Vect v = distanceAB(robot->get_position(), robot->get_position_but());
+    double x(robot->get_position().x);
+    double y(robot->get_position().y);
+    if (v.norme < deltaD){
+		x = x + v.x;
+		y = y + v.y;
+	}else{
+		x = x + (deltaD*v.x)/v.norme;
+		y = y +(deltaD*v.y)/v.norme;
+	}
+    robot->set_position(x, y);
+    if (!(egalite(robot->get_position(), robot->get_position_but()))){
+		double dp(robot->get_dp());
+		dp = dp + sqrt(pow(((deltaD*v.x)/v.norme), 2) + pow(((deltaD*v.y)/v.norme), 2));
+		robot->set_dp(dp);
+	}
+}
+
+void Simulation::prosp_changement_but(RobotP* robot)
+{
+	int cycle((robot->get_cycle())%4);
+	double x(robot->get_position().x);
+	double y(robot->get_position().y);
+	switch (cycle)
+	{
+		case 0:
+			robot->set_position_but(x, dim_max-rayon_min);
+			break;
+		case 1:
+			robot->set_position_but(x+2*rayon_min-10, y);
+			break;
+		case 2:
+			robot->set_position_but(x, rayon_min);
+			break;
+		case 3:
+			robot->set_position_but(x+2*rayon_min-10, y);
+			break;
+	}
+	++cycle;
+	robot->set_cycle(cycle);
+}
 
 //Getter
 bool Simulation::get_file_opened() {return file_opened;}

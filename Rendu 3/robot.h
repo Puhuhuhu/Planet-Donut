@@ -18,6 +18,7 @@ class Robot
         bool visited;
         bool connect; //false = autonomous, true = remote
         
+        
     public :
 		void set_connect(bool c);
 		bool get_connect();
@@ -27,10 +28,12 @@ class Robot
         double get_dp();
         void set_dp(double d);
         Point& get_position();
-        Point get_position_but();
+        Point& get_position_but();
         void set_position(double x, double y);
         void set_position_but(double x, double y);
+        void set_position_but(Point but);
         bool get_at();
+        void set_at(bool a);
         std::vector<Robot*>& get_voisin();
         Robot(int uid, double dp, double x, double y, double xb, 
               double yb, bool atteint);
@@ -42,8 +45,12 @@ class RobotP : public Robot{
 		Point position_gisement;
         double rayong, capaciteg;
         bool retour, found;
+        int cycle;
     public:
+    	int get_cycle();
+		void set_cycle(int c);
         bool get_rt();
+        void set_rt(bool r);
         bool get_fd();
         Point get_position_gisement();
         double get_rg();

@@ -256,8 +256,10 @@ void SimulationWindow::on_button_clicked_step()
 {
 	simulation.update_voisin();
 	simulation.connexion();
-	simulation.update_robot();
+	simulation.maintenance();
+	simulation.update_remote();
 	m_area.refresh();
+	actualisation_infos();
 	cout << "mise à jour de la simulation " << ++count << endl;
 }
 
@@ -358,7 +360,9 @@ bool SimulationWindow::on_idle()
 	if (started) {
 		simulation.update_voisin();
 		simulation.connexion();
-		simulation.update_robot();
+		simulation.maintenance();
+		simulation.update_remote();
+		actualisation_infos();
 		m_area.refresh();
 		cout << "mise à jour de la simulation " << ++count << endl;
 	}
@@ -401,7 +405,26 @@ void SimulationWindow::creation_infos()
 		m_box_bottom_mission.pack_start(*(labels_bases[6][i]));
 	}
 }
-	
+
+void SimulationWindow::actualisation_infos()
+{
+	for (int i(0); i<simulation.compteur_base(); ++i){
+		string uid(to_string(i+1));
+		string nbP(to_string(simulation.compteur_robotP(i)));
+		string nbF(to_string(simulation.compteur_robotF(i)));
+		string nbT(to_string(simulation.compteur_robotT(i)));
+		string nbC(to_string(simulation.compteur_robotC(i)));
+		string resources(to_string(simulation.compteur_resources(i)));
+		string mission((to_string((simulation.compteur_resources(i)/finR)*100))+" %");
+		labels_bases[0][i]->set_label(uid);
+		labels_bases[1][i]->set_label(nbP);
+		labels_bases[2][i]->set_label(nbF);
+		labels_bases[3][i]->set_label(nbT);
+		labels_bases[4][i]->set_label(nbC);
+		labels_bases[5][i]->set_label(resources);
+		labels_bases[6][i]->set_label(mission);
+	}
+}
 	
 	
 	

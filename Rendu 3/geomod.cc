@@ -252,7 +252,6 @@ void get_robot_positionsAB(Point robot_A, Point B)
 }
 
 void get_robot_com_infos(Point centre){
-//    i = i%5;
     coord_norm(centre);
     Point robot_com_est(centre), robot_com_ouest(centre), robot_com_nord(centre), robot_com_sud(centre);
     if((centre.x + rayon_comm ) > max) {

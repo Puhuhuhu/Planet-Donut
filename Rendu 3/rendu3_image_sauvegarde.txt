@@ -10,7 +10,7 @@
 # Bases :
     100 0 0.5 1 1 1 13
         # Prospector
-        1 0 25 500 0 690 false false false
+        1 405 0 905 0 950 false false false
         # Drilling
         2 0 760 0 760 0 true
         # Transport
