@@ -131,7 +131,7 @@ RobotC::RobotC(int uid, double dp, double x, double y, double xb,
 	: Robot(uid, dp, x, y, xb, yb, atteint) {}
 
 
-
+//getter
 int Robot::get_uid(){
     return uid;
 }
@@ -151,6 +151,15 @@ Point& Robot::get_position_but(){
 bool Robot::get_at(){
     return atteint;
 }
+
+bool RobotP::get_sorti_de_maintenance(){
+    return sorti_de_maintenance;
+}
+
+Point& RobotP::get_ancienne_pos(){
+    return ancienne_pos;
+}
+
     
 bool RobotP::get_rt(){
     return retour;
@@ -159,7 +168,9 @@ bool RobotP::get_rt(){
 bool RobotP::get_fd(){
     return found;
 }
-//donner
+
+//setter
+
 void RobotP::set_fd(bool fd){
     found = fd;
 }
@@ -167,6 +178,15 @@ void RobotP::set_fd(bool fd){
 void RobotP::set_position_gisement(double x, double y){
     position_gisement.x = x;
     position_gisement.y = y;
+}
+
+void RobotP::set_ancienne_pos(double x, double y){
+    ancienne_pos.x = x;
+    ancienne_pos.y = y;
+}
+
+void RobotP::set_sorti_de_maintenance(bool repation_finie){
+    sorti_de_maintenance = repation_finie;
 }
 
 

@@ -61,6 +61,7 @@ class Simulation
         void envoyer_robot_transp(RobotF* robot, size_t i);
         void forage(RobotT* robot, RobotF* robotF);
         void donner_ressources(RobotT* robot, size_t i);
+        void enregister_ancienne_pos(RobotP* robot);
 };
 
 
