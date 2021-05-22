@@ -12,6 +12,7 @@ class Gisement
 		Point centre;
 		double rayon;
 		double capacite;
+		bool found;
 		
 	public :
 		Gisement(double x, double y, double rayon, double capacite);
@@ -20,6 +21,8 @@ class Gisement
 		void set_capacite(double c);
 		Point& get_centre();
 		void intersection();
+		bool get_found();
+		void set_found(bool f);
 		
 };
 		

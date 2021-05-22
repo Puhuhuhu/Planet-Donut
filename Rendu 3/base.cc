@@ -271,11 +271,20 @@ int Base::get_nbC() {return nbC;}
 
 void Base::set_ressources(double r) {ressources = r;}
 
+int Base::get_nb_com() {return nb_com;}
+
+void Base::set_nb_com(int n) {nb_com = n;}
+
+void Base::set_nbP(int n) {nbP = n;}
+void Base::set_nbF(int n) {nbF = n;}
+void Base::set_nbT(int n) {nbT = n;}
+void Base::set_nbC(int n) {nbC = n;}
+
 //Constructeur
 Base::Base(double x, double y, double ressources, int nbP, int nbF,
            int nbT, int nbC)
            : centre({x, y}), ressources(ressources), rayon(rayon_base), nbP(nbP), 
-           nbF(nbF), nbT(nbT), nbC(nbC) {}
+           nbF(nbF), nbT(nbT), nbC(nbC) {nb_com = 1;}
 
 
 
