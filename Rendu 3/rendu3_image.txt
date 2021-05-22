@@ -7,12 +7,12 @@
 # Bases
 1 # nbB
 
-100 0 0.5 1 1 1 13
-   1 9500 25 500 0 690 false false false
+100 0 10 1 1 1 13
+   1 9000 25 500 0 690 false false false
    
    2 0 760 0 760 0 true
    
-   3 0 500 0 760 0 false false
+   3 4900 0 0 760 0 false false
 
    4 0 100 0 100 0 true 
    5 0 350 0 350 0 true

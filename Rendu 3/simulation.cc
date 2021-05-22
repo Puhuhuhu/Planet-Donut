@@ -188,14 +188,32 @@ void Simulation::maintenance()
             if  (egalite(get_Eb()[i]->get_ErP()[j]->get_position(), get_Eb()[i]->get_centre())){
                 double dp(get_Eb()[i]->get_ErP()[j]->get_dp());
                 double ressources (get_Eb()[i]->get_ressources());
-                get_Eb()[i]->set_ressources(ressources - (cost_repair*dp));
-//                rajouter la fonction resources
-                get_Eb()[i]->get_ErP()[j]->set_dp(0);
-                get_Eb()[i]->get_ErP()[j]->set_rt(false);
-                get_Eb()[i]->get_ErP()[j]->set_sorti_de_maintenance(true);
-                get_Eb()[i]->get_ErP()[j]->set_position_but(get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().x, get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().y);
-                
+                if((ressources - (cost_repair*dp) > 0)){
+                    get_Eb()[i]->set_ressources(ressources - (cost_repair*dp));
+                    get_Eb()[i]->get_ErP()[j]->set_dp(0);
+                    get_Eb()[i]->get_ErP()[j]->set_rt(false);
+                    get_Eb()[i]->get_ErP()[j]->set_sorti_de_maintenance(true);
+                    get_Eb()[i]->get_ErP()[j]->set_position_but(get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().x, get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().y);
+                }
+                else{
+                    cout << "pas assez de ressources" << endl;
+                }
             }
+        }
+
+        for(size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
+            if  (egalite(get_Eb()[i]->get_ErT()[j]->get_position(), get_Eb()[i]->get_centre())){
+                double dp(get_Eb()[i]->get_ErT()[j]->get_dp());
+                double ressources (get_Eb()[i]->get_ressources());
+                double distance_base_robotF(distanceAB(get_Eb()[i]->get_centre(), get_Eb()[i]->get_ErT()[j]->get_robotF()->get_position()).norme);
+                if ((maxD_transp - dp) < 2*distance_base_robotF){
+                    if(ressources - (cost_repair*(2*distance_base_robotF)) > 0){
+                        get_Eb()[i]->set_ressources(ressources - (cost_repair*(2*distance_base_robotF)));
+                        get_Eb()[i]->get_ErT()[j]->set_dp(dp-(2*distance_base_robotF));
+                    }
+                }
+            }
+            get_Eb()[i]->get_ErP()[j]->set_rt(false);
         }
     }
 }	
@@ -357,17 +375,11 @@ void Simulation::update_remote_p(size_t i, size_t j)
                 enregister_ancienne_pos(robot);
             }
 			robot->set_rt(true);
-            
-//            cout << "pos robot x " << robot->get_position().x << " y " << robot->get_position().y << endl;
-            cout << "ANCIENNE x " << robot->get_ancienne_pos().x << " y " << robot->get_ancienne_pos().y << endl;
-		}
-      cout << "but :  x " << robot->get_position_but().x << " y " << robot->get_position_but().y << endl;
+    }
 		if (robot->get_at()){ //si atteint son but
 			trouve_gisement(robot); //trouver gisement
-			
 			if (!(robot->get_fd())){  //si trouve rien, change son but
 				prosp_changement_but(robot);
-				
 			}else{
 				cout << "gisement trouvé" << endl; //recupère données, signal, change de but
 				signal_gisement(robot, i);
@@ -380,6 +392,7 @@ void Simulation::update_remote_p(size_t i, size_t j)
 				signal_gisement(robot, i);
 			}//sinon, continue vers son but
 		}
+        move_to_dest(robot);
 	}
 	if (robot->get_rt()){ //si retour = true, position but deviens le centre de la base
 		Point but(get_Eb()[i]->get_centre());
@@ -389,7 +402,6 @@ void Simulation::update_remote_p(size_t i, size_t j)
         robot->set_position_but(robot->get_ancienne_pos());
         robot->set_sorti_de_maintenance(false);
     }
-	move_to_dest(robot);
 	if (egalite(robot->get_position(), robot->get_position_but())){
 		robot->set_at(true);
 	}else{
@@ -416,8 +428,8 @@ void Simulation::update_remote_f(size_t i, size_t j)
 				if (!(robot->get_transp_envoye())) {envoyer_robot_transp(robot, i);}		
 			}
 		}
+        move_to_dest(robot);
 	}
-	move_to_dest(robot);
 	if (egalite(robot->get_position(), robot->get_position_but())){
 		robot->set_at(true);
 	}else{
@@ -446,13 +458,15 @@ void Simulation::update_remote_t(size_t i, size_t j)
 			Point but(get_Eb()[i]->get_centre());
 			robot->set_position_but(but);
 		}
-	}	
-	move_to_dest(robot);
+        move_to_dest(robot);
+        cout << "resources " << get_Eb()[i]->get_ressources() << endl;
+	}
 	if (egalite(robot->get_position(), robot->get_position_but())){
 		robot->set_at(true);
 	}else{
 		robot->set_at(false);
-	}		
+	}
+    cout << robot->get_dp() << endl;
 }
 	
 
@@ -462,7 +476,6 @@ void Simulation::update_remote_c(size_t i, size_t j){}
 void Simulation::move_to_dest(Robot* robot)
 {
     Vect v = distanceAB(robot->get_position(), robot->get_position_but());
-    cout << "but reel du :  x " << robot->get_position_but().x << " y " << robot->get_position_but().y << endl;
     double x(robot->get_position().x);
     double y(robot->get_position().y);
     if (v.norme < deltaD){
