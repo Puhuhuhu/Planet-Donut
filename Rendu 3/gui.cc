@@ -260,6 +260,7 @@ void SimulationWindow::on_button_clicked_step()
 	simulation.creation();
 	simulation.update_remote();
 	simulation.update_autonomous();
+	simulation.destruction();
 	m_area.refresh();
 	actualisation_infos();
 	cout << "mise à jour de la simulation " << ++count << endl;
@@ -366,6 +367,7 @@ bool SimulationWindow::on_idle()
 		simulation.creation();
 		simulation.update_remote();
 		simulation.update_autonomous();
+		simulation.destruction();
 		actualisation_infos();
 		m_area.refresh();
 		cout << "mise à jour de la simulation " << ++count << endl;

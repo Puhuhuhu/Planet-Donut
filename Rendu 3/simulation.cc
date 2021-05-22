@@ -181,7 +181,7 @@ void Simulation::verif_connexion()
 	}
 }
 			
-void Simulation::maintenance()
+/*void Simulation::maintenance()
 {
     for(size_t i(0); i<get_Eb().size(); ++i){
         for(size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
@@ -216,14 +216,45 @@ void Simulation::maintenance()
             get_Eb()[i]->get_ErP()[j]->set_rt(false);
         }
     }
-}	
+}*/
+
+void Simulation::maintenance()
+{
+	for(size_t i(0); i<get_Eb().size(); ++i){
+        for(size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
+            if  (egalite(get_Eb()[i]->get_ErP()[j]->get_position(), get_Eb()[i]->get_centre())){
+                double dp(get_Eb()[i]->get_ErP()[j]->get_dp());
+                double ressources (get_Eb()[i]->get_ressources());
+                if((ressources - (cost_repair*dp) > 0)){
+					get_Eb()[i]->set_ressources(ressources - (cost_repair*dp));
+					get_Eb()[i]->get_ErP()[j]->set_dp(0);
+					get_Eb()[i]->get_ErP()[j]->set_rt(false);
+					get_Eb()[i]->get_ErP()[j]->set_sorti_de_maintenance(true);
+					get_Eb()[i]->get_ErP()[j]->set_position_but(get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().x, get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().y);
+				}
+			}
+		}
+		for(size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
+			if  (egalite(get_Eb()[i]->get_ErT()[j]->get_position(), get_Eb()[i]->get_centre())){
+				double dp(get_Eb()[i]->get_ErT()[j]->get_dp());
+                double ressources (get_Eb()[i]->get_ressources());
+                if((ressources - (cost_repair*dp) > 0)){
+					get_Eb()[i]->set_ressources(ressources - (cost_repair*dp));
+					get_Eb()[i]->get_ErT()[j]->set_dp(0);
+				}
+			}
+		}
+	}
+}
 
 void Simulation::draw_base()
 {
 	for(size_t i(0); i<get_Eb().size(); ++i){
-		Point centre(get_Eb()[i]->get_centre());
-		double rayon(get_Eb()[i]->get_rayon());
-		get_base_infos(centre, rayon, i);
+		if(get_Eb()[i]->get_ressources() > 0){
+			Point centre(get_Eb()[i]->get_centre());
+			double rayon(get_Eb()[i]->get_rayon());
+			get_base_infos(centre, rayon, i);
+		}
 	}
 }
 
@@ -342,24 +373,26 @@ double Simulation::compteur_resources(int base_numero){
 void Simulation::update_remote()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
-		for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
-			if (get_Eb()[i]->get_ErP()[j]->get_connect()){
-				update_remote_p(i, j);
+		if(!(base_full(get_Eb()[i]->get_ressources()))){
+			for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
+				if (get_Eb()[i]->get_ErP()[j]->get_connect()){
+					update_remote_p(i, j);
+				}
 			}
-		}
-		for (size_t j(0); j<get_Eb()[i]->get_ErF().size(); ++j){
-			if (get_Eb()[i]->get_ErF()[j]->get_connect()){
-				update_remote_f(i, j);
+			for (size_t j(0); j<get_Eb()[i]->get_ErF().size(); ++j){
+				if (get_Eb()[i]->get_ErF()[j]->get_connect()){
+					update_remote_f(i, j);
+				}
 			}
-		}
-		for (size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
-			if (get_Eb()[i]->get_ErT()[j]->get_connect()){
-				update_remote_t(i, j);
+			for (size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
+				if (get_Eb()[i]->get_ErT()[j]->get_connect()){
+					update_remote_t(i, j);
+				}
 			}
-		}
-		for (size_t j(0); j<get_Eb()[i]->get_ErC().size(); ++j){
-			if (get_Eb()[i]->get_ErC()[j]->get_connect()){
-				update_remote_c(i, j);
+			for (size_t j(0); j<get_Eb()[i]->get_ErC().size(); ++j){
+				if (get_Eb()[i]->get_ErC()[j]->get_connect()){
+					update_remote_c(i, j);
+				}
 			}
 		}
 	}
@@ -497,24 +530,26 @@ void Simulation::update_remote_c(size_t i, size_t j)
 void Simulation::update_autonomous()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
-		for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
-			if (!(get_Eb()[i]->get_ErP()[j]->get_connect())){
-				update_autonomous_p(i, j);
+		if(!(base_full(get_Eb()[i]->get_ressources()))){
+			for (size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
+				if (!(get_Eb()[i]->get_ErP()[j]->get_connect())){
+					update_autonomous_p(i, j);
+				}
 			}
-		}
-		for (size_t j(0); j<get_Eb()[i]->get_ErF().size(); ++j){
-			if (!(get_Eb()[i]->get_ErF()[j]->get_connect())){
-				update_autonomous_f(i, j);
+			for (size_t j(0); j<get_Eb()[i]->get_ErF().size(); ++j){
+				if (!(get_Eb()[i]->get_ErF()[j]->get_connect())){
+					update_autonomous_f(i, j);
+				}
 			}
-		}
-		for (size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
-			if (!(get_Eb()[i]->get_ErT()[j]->get_connect())){
-				update_autonomous_t(i, j);
+			for (size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
+				if (!(get_Eb()[i]->get_ErT()[j]->get_connect())){
+					update_autonomous_t(i, j);
+				}
 			}
-		}
-		for (size_t j(0); j<get_Eb()[i]->get_ErC().size(); ++j){
-			if (!(get_Eb()[i]->get_ErC()[j]->get_connect())){
-				update_autonomous_c(i, j);
+			for (size_t j(0); j<get_Eb()[i]->get_ErC().size(); ++j){
+				if (!(get_Eb()[i]->get_ErC()[j]->get_connect())){
+					update_autonomous_c(i, j);
+				}
 			}
 		}
 	}
@@ -840,7 +875,7 @@ void Simulation::creation()
 			}
 		}
 		while (nb < max_robots){
-			if (ressources - cost_com > 0 ){
+			if (ressources - 16*cost_com > 0 ){
 				if (get_Eb()[i]->get_nb_com() < 16){
 					creation_c(i);
 				}
@@ -924,6 +959,33 @@ void Simulation::creation_c(size_t i)
 	int nbC(base->get_nbC());
 	++nbC;
 	base->set_nbC(nbC);
+}
+
+void Simulation::destruction()
+{
+	for(size_t i(0); i<get_Eb().size(); ++i){
+		Base* base(&(*(get_Eb()[i])));
+		if(base->get_ressources() <= 0){
+			base->get_Er().clear();
+			base->get_ErP().clear();
+			base->get_ErF().clear();
+			base->get_ErT().clear();
+			base->get_ErC().clear();		
+			base->set_nbP(0);
+			base->set_nbF(0);
+			base->set_nbT(0);
+			base->set_nbC(0);
+		}
+	}
+}
+
+bool Simulation::base_full(double ressources)
+{
+    if(ressources < finR){ //Si base a encore besoin de resources
+        return false;
+    }else{
+        return true;
+    }
 }
 
 //Getter

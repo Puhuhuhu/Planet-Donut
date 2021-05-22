@@ -72,6 +72,8 @@ class Simulation
         void creation_t(size_t i);
         void creation_p(size_t i);
         void creation_c(size_t i);
+        void destruction();
+        bool base_full(double ressources);
 };
 
 
