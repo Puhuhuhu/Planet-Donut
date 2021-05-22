@@ -19,8 +19,11 @@ class Robot
         bool connect; //false = autonomous, true = remote
         bool sorti_de_maintenance;
         Point ancienne_pos;
+        bool connect_liaison;
         
     public :
+		void set_connect_liaison(bool c);
+		bool get_connect_liaison();
 		void set_connect(bool c);
 		bool get_connect();
 		void set_visited(bool v);
@@ -49,10 +52,16 @@ class RobotP : public Robot{
         bool retour, found;
         int cycle;
         bool sorti_de_maintenance;
+        bool ancien_connect;
         Point ancienne_pos;
+        int domaine; //%2 : 0 = haut, 1 = bas
         
     public:
 //    getter
+		bool get_ancien_connect();
+		void set_ancien_connect(bool a);
+		int get_domaine();
+		void set_domaine(int d);
     	int get_cycle();
 		void set_cycle(int c);
         bool get_rt();

@@ -109,7 +109,7 @@ RobotC creer_robotC(string line)
 
 Robot::Robot(int uid, double dp, double x, double y, double xb, 
              double yb, bool atteint)
-	: uid(uid), dp(dp), position({x, y}), position_but({xb, yb}), atteint(atteint) {}
+	: uid(uid), dp(dp), position({x, y}), position_but({xb, yb}), atteint(atteint) {connect_liaison = false;}
 	
 RobotP::RobotP(int uid, double dp, double x, double y, double xb, 
                double yb, bool atteint, bool retour, bool found,
@@ -279,5 +279,17 @@ void RobotT::set_ressources_transp(double r) {ressources_transp = r;}
 bool RobotF::get_gisement_vide() {return gisement_vide;}
 
 void RobotF::set_gisement_vide(bool g) {gisement_vide = g;}
+
+int RobotP::get_domaine() {return domaine;}
+
+void RobotP::set_domaine(int d) {domaine = d;}
+
+bool RobotP::get_ancien_connect() {return ancien_connect;}
+
+void RobotP::set_ancien_connect(bool a) {ancien_connect = a;}
+
+void Robot::set_connect_liaison(bool c) {connect_liaison = c;}
+
+bool Robot::get_connect_liaison() {return connect_liaison;}
 	
 	

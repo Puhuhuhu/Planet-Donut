@@ -8,7 +8,7 @@
 1 # nbB
 
 100 0 0.5 1 1 1 13
-   1 9500 25 500 0 690 false false false
+   1 0 25 500 0 690 false false false
    
    2 0 760 0 760 0 true
    

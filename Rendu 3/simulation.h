@@ -44,6 +44,11 @@ class Simulation
 		void update_remote_f(size_t i, size_t j);
 		void update_remote_t(size_t i, size_t j);
 		void update_remote_c(size_t i, size_t j);
+		void update_autonomous();
+		void update_autonomous_p(size_t i, size_t j);
+		void update_autonomous_f(size_t i, size_t j);
+		void update_autonomous_t(size_t i, size_t j);
+		void update_autonomous_c(size_t i, size_t j);
 		
         void draw_rayon_comm();
     
@@ -55,13 +60,18 @@ class Simulation
         double compteur_resources(int base_numero);
         void move_to_dest(Robot* robot);
         void prosp_changement_but(RobotP* robot);   
-        void trouve_gisement(RobotP* robot);
+        void trouve_gisement(RobotP* robot, size_t i);
         void signal_gisement(RobotP* robot, size_t i);
         void sur_gisement(RobotF* robot);
         void envoyer_robot_transp(RobotF* robot, size_t i);
         void forage(RobotT* robot, RobotF* robotF);
         void donner_ressources(RobotT* robot, size_t i);
-        void enregister_ancienne_pos(RobotP* robot);
+        void enregistrer_ancienne_pos(RobotP* robot);
+        void creation();
+        void creation_f(size_t i);
+        void creation_t(size_t i);
+        void creation_p(size_t i);
+        void creation_c(size_t i);
 };
 
 

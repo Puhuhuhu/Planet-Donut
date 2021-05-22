@@ -22,6 +22,7 @@ class Base
 		std::vector<std::shared_ptr<RobotF>> ErF;
 		std::vector<std::shared_ptr<RobotT>> ErT;
 		std::vector<std::shared_ptr<RobotC>> ErC;
+		int nb_com;
 				
 	public :
 		Base(double x, double y, double ressources, int nbP, int nbF, int nbT,int nbC);
@@ -33,6 +34,10 @@ class Base
 		int get_nbF();
 		int get_nbT();
 		int get_nbC();
+		void set_nbP(int n);
+		void set_nbF(int n);
+		void set_nbT(int n);
+		void set_nbC(int n);
 		std::vector<std::shared_ptr<Robot>>& get_Er();
 		std::vector<std::shared_ptr<RobotP>>& get_ErP();
 		std::vector<std::shared_ptr<RobotF>>& get_ErF();
@@ -45,6 +50,8 @@ class Base
 		void decodage_robotF(int nbF, std::ifstream &config);
 		void decodage_robotT(int nbT, std::ifstream &config);
 		void decodage_robotC(int nbC, std::ifstream &config);
+		int get_nb_com();
+		void set_nb_com(int n);
 };
 		
 
