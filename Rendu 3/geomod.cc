@@ -117,11 +117,13 @@ bool cercle_cercle(Point &p1, const double &r1, Point &p2, const double &r2)
 	}else{return false;}
 }
 
-void get_base_infos(Point centre, double rayon, int i){
-	i = i%5;
+void get_base_infos(Point centre, double rayon, int i)
+{
+	i = i%6;
     coord_norm(centre);
     graphic_draw_base(centre.x, centre.y, rayon, i);
-    Point base_est(centre), base_ouest(centre), base_nord(centre), base_sud(centre), base_ne(centre), base_no(centre), base_se(centre), base_so(centre);
+    Point base_est(centre), base_ouest(centre), base_nord(centre), base_sud(centre),
+		  base_ne(centre), base_no(centre), base_se(centre), base_so(centre);
     if((centre.x + 10*rayon ) > max) {
 		base_ouest.x = centre.x - 2*max;
 		graphic_draw_base(base_ouest.x, centre.y, 10*rayon, i);
@@ -160,68 +162,76 @@ void get_base_infos(Point centre, double rayon, int i){
 	}
 }
 
-void get_gisement_infos(Point centre, double rayon){
+void get_gisement_infos(Point centre, double rayon, double capacite, 
+						double capacite_ini)
+{
     coord_norm(centre);
-    graphic_draw_gisement(centre.x, centre.y, rayon,0, 0, 0);
-    Point gisement_est(centre), gisement_ouest(centre), gisement_nord(centre), gisement_sud(centre), gisement_ne(centre), gisement_no(centre), gisement_se(centre), gisement_so(centre);
+    graphic_draw_gisement(centre.x, centre.y, rayon, capacite, capacite_ini);
+    Point gisement_est(centre), gisement_ouest(centre), gisement_nord(centre), 
+		  gisement_sud(centre), gisement_ne(centre), gisement_no(centre), 
+		  gisement_se(centre), gisement_so(centre);
     if((centre.x + rayon ) > max) {
 		gisement_ouest.x = centre.x - 2*max;
-		graphic_draw_gisement(gisement_ouest.x, centre.y, rayon, 0, 0, 0);		
+		graphic_draw_gisement(gisement_ouest.x,centre.y,rayon,capacite,capacite_ini);		
 	}
     if((centre.x - rayon ) < -max) { 
 		gisement_est.x = centre.x + 2*max;
-		graphic_draw_gisement(gisement_ouest.x, centre.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(gisement_ouest.x,centre.y,rayon,capacite,capacite_ini);
 	}
     if((centre.y + rayon ) > max) { 
 		gisement_sud.y = centre.y - 2*max;
-		graphic_draw_gisement(centre.x, gisement_sud.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(centre.x,gisement_sud.y,rayon,capacite,capacite_ini);
 	}
     if((centre.y - rayon ) < -max) { 
 		gisement_nord.y = centre.y + 2*max;
-		graphic_draw_gisement(centre.x, gisement_nord.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(centre.x,gisement_nord.y,rayon,capacite,capacite_ini);
 	}
 	if (((centre.x + rayon ) > max) and ((centre.y + rayon) > max)){
 		gisement_so.x = centre.x - 2*max;
 		gisement_so.y = centre.y - 2*max;
-		graphic_draw_gisement(gisement_so.x, gisement_so.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(gisement_so.x,gisement_so.y,rayon,capacite,capacite_ini);
 	}
 	if (((centre.x - rayon ) < -max) and ((centre.y + rayon) > max)){
 		gisement_se.x = centre.x + 2*max;
 		gisement_se.y = centre.y - 2*max;
-		graphic_draw_gisement(gisement_se.x, gisement_se.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(gisement_se.x,gisement_se.y,rayon,capacite,capacite_ini);
 	}
 	if (((centre.x - rayon ) < -max) and ((centre.y - rayon) < -max)){
 		gisement_ne.x = centre.x + 2*max;
 		gisement_ne.y = centre.y + 2*max;
-		graphic_draw_gisement(gisement_ne.x, gisement_ne.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(gisement_ne.x,gisement_ne.y,rayon,capacite,capacite_ini);
 	}
 	if (((centre.x + rayon ) > max) and ((centre.y - rayon) < -max)){
 		gisement_no.x = centre.x - 2*max;
 		gisement_no.y = centre.y + 2*max;
-		graphic_draw_gisement(gisement_no.x, gisement_no.y, rayon, 0, 0, 0);
+		graphic_draw_gisement(gisement_no.x,gisement_no.y,rayon,capacite,capacite_ini);
 	}
 }
 
-void get_robotP_infos(Point centre, int i){
-	i = i%5;
+void get_robotP_infos(Point centre, int i)
+{
+	i = i%6;
     coord_norm(centre);
     graphic_draw_robotP(centre.x, centre.y, i);
 }
 
-void get_robotF_infos(Point centre, int i){
-	i = i%5;
+void get_robotF_infos(Point centre, int i)
+{
+	i = i%6;
     coord_norm(centre);
     graphic_draw_robotF(centre.x, centre.y, i);
 }
 
-void get_robotT_infos(Point centre, int i){
-	i = i%5;
+void get_robotT_infos(Point centre, int i)
+{
+	i = i%6;
     coord_norm(centre);
     graphic_draw_robotT(centre.x, centre.y, i);
 }
 
-void get_robotC_infos(Point centre, int i){
-	i = i%5;
+void get_robotC_infos(Point centre, int i)
+{
+	i = i%6;
     coord_norm(centre);
     graphic_draw_robotC(centre.x, centre.y, i);
 }
@@ -253,9 +263,12 @@ void get_robot_positionsAB(Point robot_A, Point B)
 }
 
 
-void get_robot_com_infos(Point centre){
+void get_robot_com_infos(Point centre)
+{
     coord_norm(centre);
-    Point robot_com_est(centre), robot_com_ouest(centre), robot_com_nord(centre), robot_com_sud(centre), robot_com_so(centre), robot_com_se(centre), robot_com_no(centre), robot_com_ne(centre);
+    Point robot_com_est(centre), robot_com_ouest(centre), robot_com_nord(centre), 
+		  robot_com_sud(centre), robot_com_so(centre), robot_com_se(centre), 
+		  robot_com_no(centre), robot_com_ne(centre);
     if((centre.x + rayon_comm ) > max) {
         robot_com_est.x = (centre.x)- 2*max;
         graphic_draw_robot_comm(robot_com_est.x, centre.y);

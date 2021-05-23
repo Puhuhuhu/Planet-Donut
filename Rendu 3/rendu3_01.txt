@@ -1,4 +1,4 @@
-# fichier de test rendu3_01.txt
+# fichier de test rendu3_01.txt : rebouclement
 # gisements
 3
 950    0   150  9000

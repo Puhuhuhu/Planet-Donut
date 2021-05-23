@@ -48,7 +48,8 @@ bool cercle_cercle(Point &p1, const double &r1, Point &p2, const double &r2);
 
 void get_base_infos(Point centre, double rayon, int i);
 
-void get_gisement_infos(Point centre, double rayon);
+void get_gisement_infos(Point centre, double rayon, double capacite, 
+						double capacite_ini);
 
 void get_robotP_infos(Point centre, int i);
 

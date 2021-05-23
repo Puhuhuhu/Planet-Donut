@@ -42,8 +42,6 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_top_left(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_top_right(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_bottom(Gtk::ORIENTATION_HORIZONTAL, 0),
-	//m_box_bottom_info(Gtk::ORIENTATION_VERTICAL, 0),
-	//m_box_bottom_label(Gtk::ORIENTATION_HORIZONTAL, 0),
 	m_box_bottom_uid(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_bottom_nbP(Gtk::ORIENTATION_VERTICAL, 0),
 	m_box_bottom_nbF(Gtk::ORIENTATION_VERTICAL, 0),
@@ -129,13 +127,27 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 	m_box_bottom.pack_start(m_box_bottom_resources);
 	m_box_bottom.pack_start(m_box_bottom_mission);
 
-	m_button_exit.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_exit));
-	m_button_startstop.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_startstop));
-	m_button_step.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_step));
-	m_button_open.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_open));
-	m_button_save.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_save));
-	m_button_togglelink.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglelink));
-	m_button_togglerange.signal_clicked().connect(sigc::mem_fun(*this, &SimulationWindow::on_button_clicked_togglerange));
+	m_button_exit.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_exit));
+	
+	m_button_startstop.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_startstop));
+	
+	m_button_step.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_step));
+	
+	m_button_open.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_open));
+	
+	m_button_save.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_save));
+	
+	m_button_togglelink.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_togglelink));
+	
+	m_button_togglerange.signal_clicked().connect(sigc::mem_fun(*this, 
+	&SimulationWindow::on_button_clicked_togglerange));
+	
 	Glib::signal_idle().connect( sigc::mem_fun(*this, &SimulationWindow::on_idle) );
 	
 	for (int j(0); j<7; ++j){
@@ -156,11 +168,7 @@ SimulationWindow::SimulationWindow(int argc, char *argv[]) :
 }
 
 bool MyArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
-{
-	Gtk::Allocation allocation = get_allocation();
-	int width = allocation.get_width();
-	int height = allocation.get_height();
-	
+{	
 	graphic_set_context(cr);
 	
 	adjust_frame();
@@ -263,7 +271,6 @@ void SimulationWindow::on_button_clicked_step()
 	simulation.destruction();
 	m_area.refresh();
 	actualisation_infos();
-	cout << "mise à jour de la simulation " << ++count << endl;
 }
 
 
@@ -280,7 +287,9 @@ void SimulationWindow::on_button_clicked_open()
 	{
 		case (Gtk::RESPONSE_OK):
 			if (!(simulation.get_file_opened())){
-				cout << "fichier ouvert :" << decode_filename(dialog.get_filename()) << endl;
+				cout << "fichier ouvert :" << decode_filename(dialog.get_filename()) 
+				     << endl;
+				     
 				simulation.lecture(decode_filename(dialog.get_filename()));
 				creation_infos();	
 				show_all_children();
@@ -356,6 +365,7 @@ bool SimulationWindow::on_key_press_event(GdkEventKey * key_event)
 				break;
 		}
 	}
+	return true;
 }
 
 bool SimulationWindow::on_idle()
@@ -370,19 +380,8 @@ bool SimulationWindow::on_idle()
 		simulation.destruction();
 		actualisation_infos();
 		m_area.refresh();
-		cout << "mise à jour de la simulation " << ++count << endl;
 	}
 	return true;
-}
-	
-string decode_filename(string name)
-{
-	string newname;
-	for (int i(name.size()-1) ; i>=0; --i){
-		if (name[i] == '/') {break;}
-		newname = name[i] + newname;
-	}
-	return newname;
 }
 
 void SimulationWindow::creation_infos()
@@ -431,14 +430,16 @@ void SimulationWindow::actualisation_infos()
 		labels_bases[6][i]->set_label(mission);
 	}
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+//Fonction
+
+string decode_filename(string name)
+{
+	string newname;
+	for (int i(name.size()-1) ; i>=0; --i){
+		if (name[i] == '/') {break;}
+		newname = name[i] + newname;
+	}
+	return newname;
+}

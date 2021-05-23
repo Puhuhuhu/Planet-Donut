@@ -16,6 +16,7 @@ static vector<unique_ptr<Base>> Eb; //Ensemble Eb
 
 
 //Fonctions
+
 void lecture_base(string line, ifstream &config)
 {
 	istringstream data(line);
@@ -34,7 +35,8 @@ void creer_base(double x, double y, double ressources, int nbP, int nbF, int nbT
 {
 	coord_norm(x);
 	coord_norm(y);
-	Eb.push_back(unique_ptr<Base>(new Base(x, y, ressources, nbP, nbF, nbT, nbC)));  // Creation de la base
+	// Creation de la base
+	Eb.push_back(unique_ptr<Base>(new Base(x, y, ressources, nbP, nbF, nbT, nbC)));
 	Eb.back()->intersection();
 	Eb.back()->decodage_robotP(nbP, config);
 	Eb.back()->decodage_robotF(nbF, config);
@@ -153,6 +155,7 @@ void save_robotC(ofstream& sauvegarde, int j, int i)
 		       << atteintst << endl;
 }
 //Methodes 
+
 void Base::decodage_robotP(int nbP, ifstream &config)
 {
 	string line;
@@ -208,7 +211,8 @@ void Base::decodage_robotC(int nbC, ifstream &config)
 		
 
 
-void Base::intersection(){
+void Base::intersection()
+{
 	//parcours de l'ensemble
 	for(size_t i(0); i<Eb.size()-1; ++i){
 		Point centre2(Eb[i]->get_centre());
@@ -235,7 +239,8 @@ void Base::test_uid()
 }
 			
 
-void Base::test_robocom(){
+void Base::test_robocom()
+{
 	bool robocom(false);
 	for(size_t i(0); i<ErC.size(); ++i){
 		Point centre2(ErC[i]->get_position());
@@ -250,6 +255,7 @@ void Base::test_robocom(){
 }
 	
 //Getters Setters
+
 Point& Base::get_centre() {return centre;}
 
 double Base::get_ressources() {return ressources;}
@@ -257,34 +263,41 @@ double Base::get_ressources() {return ressources;}
 double Base::get_rayon() {return rayon;}
 
 vector<shared_ptr<Robot>>& Base::get_Er() {return Er;}
+
 vector<shared_ptr<RobotP>>& Base::get_ErP() {return ErP;}
+
 vector<shared_ptr<RobotF>>& Base::get_ErF() {return ErF;}
+
 vector<shared_ptr<RobotT>>& Base::get_ErT() {return ErT;}
+
 vector<shared_ptr<RobotC>>& Base::get_ErC() {return ErC;}
 
 vector<unique_ptr<Base>>& get_Eb() {return Eb;}
 
 int Base::get_nbP() {return nbP;}
+
 int Base::get_nbF() {return nbF;}
+
 int Base::get_nbT() {return nbT;}
+
 int Base::get_nbC() {return nbC;}
 
 void Base::set_ressources(double r) {ressources = r;}
 
-int Base::get_nb_com() {return nb_com;}
-
-void Base::set_nb_com(int n) {nb_com = n;}
-
 void Base::set_nbP(int n) {nbP = n;}
+
 void Base::set_nbF(int n) {nbF = n;}
+
 void Base::set_nbT(int n) {nbT = n;}
+
 void Base::set_nbC(int n) {nbC = n;}
 
 //Constructeur
+
 Base::Base(double x, double y, double ressources, int nbP, int nbF,
            int nbT, int nbC)
            : centre({x, y}), ressources(ressources), rayon(rayon_base), nbP(nbP), 
-           nbF(nbF), nbT(nbT), nbC(nbC) {nb_com = 1;}
+           nbF(nbF), nbT(nbT), nbC(nbC) {}
 
 
 

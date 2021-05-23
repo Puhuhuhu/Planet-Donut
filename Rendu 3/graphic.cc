@@ -9,13 +9,20 @@ void graphic_set_context(const Cairo::RefPtr<Cairo::Context>& cr)
 	ptcr = &cr;
 }
 
-void graphic_draw_gisement(double x, double y, double rayon, double r, double g, double b)
+void graphic_draw_gisement(double x, double y, double rayon, double capacite, 
+				           double capacite_ini)
 {
-	(*ptcr)->set_source_rgb(r, g, b);
+	(*ptcr)->set_source_rgb(0, 0, 0);
 	(*ptcr)->set_line_width(10);
 	(*ptcr)->arc(x, y, rayon, 0, 2*M_PI);
     (*ptcr)->fill_preserve();
 	(*ptcr)->stroke();
+	(*ptcr)->set_source_rgb(1, 1, 1);
+	if (capacite > 0){
+		double portion(capacite/capacite_ini);
+		(*ptcr)->arc(x, y, rayon-10, 0, 2*M_PI*portion);
+		(*ptcr)->stroke();
+	}
 }
 
 void graphic_draw_base(double x, double y, double rayon, int i)
@@ -34,7 +41,7 @@ void graphic_draw_base(double x, double y, double rayon, int i)
 			break;
 			
 		case 3:
-			(*ptcr)->set_source_rgb(1, 1, 0);
+			(*ptcr)->set_source_rgb(0.8, 0.8, 0);
 			break;
 			
 		case 4:
@@ -45,9 +52,8 @@ void graphic_draw_base(double x, double y, double rayon, int i)
 			(*ptcr)->set_source_rgb(0, 1, 1);
 			break;
 		}
-	(*ptcr)->set_line_width(10);
-	(*ptcr)->arc(x, y, 10*rayon, 0, 2*M_PI);
-    (*ptcr)->fill_preserve();
+	(*ptcr)->set_line_width(2);
+	(*ptcr)->arc(x, y, 30*rayon, 0, 2*M_PI);
 	(*ptcr)->stroke();
 }
 
@@ -67,7 +73,7 @@ void graphic_draw_robotP(double x, double y, int i)
 			break;
 			
 		case 3:
-			(*ptcr)->set_source_rgb(1, 1, 0);
+			(*ptcr)->set_source_rgb(0.8, 0.8, 0);
 			break;
 			
 		case 4:
@@ -99,7 +105,7 @@ void graphic_draw_robotF(double x, double y, int i)
 			break;
 			
 		case 3:
-			(*ptcr)->set_source_rgb(1, 1, 0);
+			(*ptcr)->set_source_rgb(0.8, 0.8, 0);
 			break;
 			
 		case 4:
@@ -135,7 +141,7 @@ void graphic_draw_robotT(double x, double y, int i)
 			break;
 			
 		case 3:
-			(*ptcr)->set_source_rgb(1, 1, 0);
+			(*ptcr)->set_source_rgb(0.8, 0.8, 0);
 			break;
 			
 		case 4:
@@ -171,7 +177,7 @@ void graphic_draw_robotC(double x, double y, int i)
 			break;
 			
 		case 3:
-			(*ptcr)->set_source_rgb(1, 1, 0);
+			(*ptcr)->set_source_rgb(0.8, 0.8, 0);
 			break;
 			
 		case 4:
@@ -192,7 +198,9 @@ void graphic_draw_robotC(double x, double y, int i)
 	(*ptcr)->stroke();
 }
 
-void graphic_draw_line(double robotA_x, double robotA_y, double robotB_x, double robotB_y){
+void graphic_draw_line(double robotA_x, double robotA_y, double robotB_x, 
+					   double robotB_y)
+{
     (*ptcr)->set_line_width(1.3);
     (*ptcr)->set_source_rgb(0.8, 0, 1);
     (*ptcr)->move_to(robotA_x,robotA_y);
@@ -201,14 +209,16 @@ void graphic_draw_line(double robotA_x, double robotA_y, double robotB_x, double
 }
 
 //dessine le perimetre de communication des robots
-void graphic_draw_robot_comm(double centre_x, double centre_y){
+void graphic_draw_robot_comm(double centre_x, double centre_y)
+{
     (*ptcr)->set_line_width(2.0);
     (*ptcr)->set_source_rgb(0.6,0.6,0.6); // choisir la nouvelle couleur
     (*ptcr)->arc(centre_x, centre_y, rayon_comm, 0, 2*M_PI);
     (*ptcr)->stroke();
 }
 
-void graphic_draw_rectangle(double xmin, double xmax, double ymin, double ymax, double dim_max)
+void graphic_draw_rectangle(double xmin, double xmax, double ymin, double ymax, 
+							double dim_max)
 {
 	(*ptcr)->set_source_rgb(0.94, 0.94, 0.94);
 	(*ptcr)->set_line_width(1);

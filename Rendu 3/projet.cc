@@ -1,3 +1,7 @@
+//324476 Frédéric Pili
+//327775 Tommaso Gazzini
+
+
 #include "simulation.h"
 #include "constantes.h"
 #include "gui.h"

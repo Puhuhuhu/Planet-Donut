@@ -33,13 +33,15 @@ void creer_gisement(double x, double y, double rayon, double capacite)
 	and (capacite <= 1000*(rayon/rayon_min)*(rayon/rayon_min))){
 		coord_norm(x);
 		coord_norm(y);
-		Eg.push_back(unique_ptr<Gisement>(new Gisement(x, y, rayon, capacite)));  //Creation du gisement
+		//Creation du gisement
+		Eg.push_back(unique_ptr<Gisement>(new Gisement(x, y, rayon, capacite)));
 		Eg.back()->intersection(); //Verification des possibles intersections
 	}else{exit(0);}	
 }
 
 
-void intersection_base_gisement(Point centre, double rayon){
+void intersection_base_gisement(Point centre, double rayon)
+{
 	for(size_t i(0); i<Eg.size(); ++i){
 		Point centre2(Eg[i]->get_centre());
 		double rayon2(Eg[i]->get_rayon());
@@ -61,7 +63,8 @@ void save_gisement(ofstream& sauvegarde)
 }
 
 //Methodes
-void Gisement::intersection(){
+void Gisement::intersection()
+{
 	//parcours de l'ensemble
 	for(size_t i(0); i<Eg.size()-1; ++i){
 		Point centre2(Eg[i]->get_centre());
@@ -78,7 +81,11 @@ void Gisement::intersection(){
 
 //Constructeur
 Gisement::Gisement(double x, double y, double rayon, double capacite) 
-				 : centre({x, y}), rayon(rayon), capacite(capacite) {found = false;}			 
+				 : centre({x, y}), rayon(rayon), capacite(capacite) 
+{
+	found = false; 
+	capacite_ini = capacite;
+}			 
 
 //Getters setters
 double& Gisement::get_rayon() {return rayon;}   
@@ -94,3 +101,5 @@ void Gisement::set_capacite(double c) {capacite = c;}
 bool Gisement::get_found() {return found;}
 
 void Gisement::set_found(bool f) {found = f;}
+
+double Gisement::get_capacite_ini() {return capacite_ini;}

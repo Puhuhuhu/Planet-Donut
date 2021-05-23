@@ -8,22 +8,23 @@
 
 class Gisement 
 {
-	private :
-		Point centre;
-		double rayon;
-		double capacite;
-		bool found;
+private :
+	Point centre;
+	double rayon;
+	double capacite_ini;
+	double capacite;
+	bool found;
 		
-	public :
-		Gisement(double x, double y, double rayon, double capacite);
-		double& get_rayon();
-		double get_capacite();
-		void set_capacite(double c);
-		Point& get_centre();
-		void intersection();
-		bool get_found();
-		void set_found(bool f);
-		
+public :
+	Gisement(double x, double y, double rayon, double capacite);
+	double get_capacite_ini();
+	double& get_rayon();
+	double get_capacite();
+	void set_capacite(double c);
+	Point& get_centre();
+	void intersection();
+	bool get_found();
+	void set_found(bool f);	
 };
 		
 

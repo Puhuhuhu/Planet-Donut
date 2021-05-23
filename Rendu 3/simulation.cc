@@ -100,7 +100,8 @@ void Simulation::update_voisin()
 					Point p1(get_Eb()[i]->get_Er()[k]->get_position());
 					Point p2(get_Eb()[j]->get_Er()[m]->get_position());
 					if (cercle_cercle(p1, rayon_comm, p2, rayon_comm)){
-						get_Eb()[i]->get_Er()[k]->get_voisin().push_back(&(*(get_Eb()[j]->get_Er()[m])));
+						get_Eb()[i]->get_Er()[k]->get_voisin().push_back(
+						&(*(get_Eb()[j]->get_Er()[m])));
 					}
 				}
 			}
@@ -180,49 +181,14 @@ void Simulation::verif_connexion()
 		}
 	}
 }
-			
-/*void Simulation::maintenance()
-{
-    for(size_t i(0); i<get_Eb().size(); ++i){
-        for(size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
-            if  (egalite(get_Eb()[i]->get_ErP()[j]->get_position(), get_Eb()[i]->get_centre())){
-                double dp(get_Eb()[i]->get_ErP()[j]->get_dp());
-                double ressources (get_Eb()[i]->get_ressources());
-                if((ressources - (cost_repair*dp) > 0)){
-                    get_Eb()[i]->set_ressources(ressources - (cost_repair*dp));
-                    get_Eb()[i]->get_ErP()[j]->set_dp(0);
-                    get_Eb()[i]->get_ErP()[j]->set_rt(false);
-                    get_Eb()[i]->get_ErP()[j]->set_sorti_de_maintenance(true);
-                    get_Eb()[i]->get_ErP()[j]->set_position_but(get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().x, get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().y);
-                }
-                else{
-                    cout << "pas assez de ressources" << endl;
-                }
-            }
-        }
 
-        for(size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
-            if  (egalite(get_Eb()[i]->get_ErT()[j]->get_position(), get_Eb()[i]->get_centre())){
-                double dp(get_Eb()[i]->get_ErT()[j]->get_dp());
-                double ressources (get_Eb()[i]->get_ressources());
-                double distance_base_robotF(distanceAB(get_Eb()[i]->get_centre(), get_Eb()[i]->get_ErT()[j]->get_robotF()->get_position()).norme);
-                if ((maxD_transp - dp) < 2*distance_base_robotF){
-                    if(ressources - (cost_repair*(2*distance_base_robotF)) > 0){
-                        get_Eb()[i]->set_ressources(ressources - (cost_repair*(2*distance_base_robotF)));
-                        get_Eb()[i]->get_ErT()[j]->set_dp(dp-(2*distance_base_robotF));
-                    }
-                }
-            }
-            get_Eb()[i]->get_ErP()[j]->set_rt(false);
-        }
-    }
-}*/
 
 void Simulation::maintenance()
 {
 	for(size_t i(0); i<get_Eb().size(); ++i){
         for(size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
-            if  (egalite(get_Eb()[i]->get_ErP()[j]->get_position(), get_Eb()[i]->get_centre())){
+            if  (egalite(get_Eb()[i]->get_ErP()[j]->get_position(), 
+						 get_Eb()[i]->get_centre())){
                 double dp(get_Eb()[i]->get_ErP()[j]->get_dp());
                 double ressources (get_Eb()[i]->get_ressources());
                 if((ressources - (cost_repair*dp) > 0)){
@@ -230,12 +196,15 @@ void Simulation::maintenance()
 					get_Eb()[i]->get_ErP()[j]->set_dp(0);
 					get_Eb()[i]->get_ErP()[j]->set_rt(false);
 					get_Eb()[i]->get_ErP()[j]->set_sorti_de_maintenance(true);
-					get_Eb()[i]->get_ErP()[j]->set_position_but(get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().x, get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().y);
+					get_Eb()[i]->get_ErP()[j]->set_position_but(
+						get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().x, 
+						get_Eb()[i]->get_ErP()[j]->get_ancienne_pos().y);
 				}
 			}
 		}
 		for(size_t j(0); j<get_Eb()[i]->get_ErT().size(); ++j){
-			if  (egalite(get_Eb()[i]->get_ErT()[j]->get_position(), get_Eb()[i]->get_centre())){
+			if  (egalite(get_Eb()[i]->get_ErT()[j]->get_position(), 
+					     get_Eb()[i]->get_centre())){
 				double dp(get_Eb()[i]->get_ErT()[j]->get_dp());
                 double ressources (get_Eb()[i]->get_ressources());
                 if((ressources - (cost_repair*dp) > 0)){
@@ -263,7 +232,9 @@ void Simulation::draw_gisement()
 	for (size_t i(0); i<get_Eg().size(); ++i){
 		Point centre(get_Eg()[i]->get_centre());
 		double rayon(get_Eg()[i]->get_rayon());
-		get_gisement_infos(centre, rayon);
+		double capacite(get_Eg()[i]->get_capacite());
+		double capacite_ini(get_Eg()[i]->get_capacite_ini());
+		get_gisement_infos(centre, rayon, capacite, capacite_ini);
 	}
 }
 
@@ -317,25 +288,14 @@ void Simulation::draw_rayon_comm()
     }
 }
 
-/*
-void Simulation::update_robot()
-{
-	for (size_t i(0); i<get_Eb().size(); ++i){
-		for(size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
-			get_Eb()[i]->get_Er()[j]->set_position(get_Eb()[i]->get_Er()[j]->get_position().x + deltaD, get_Eb()[i]->get_Er()[j]->get_position().y);
-		}
-	}
-}
-*/
-
 void Simulation::draw_liaison()
 {
 	for (size_t i(0); i<get_Eb().size(); ++i){
 		for (size_t j(0); j<get_Eb()[i]->get_Er().size(); ++j){
 			for (size_t k(0); k<get_Eb()[i]->get_Er()[j]->get_voisin().size(); ++k){
 				Robot* robot(&(*(get_Eb()[i]->get_Er()[j])));
-				Point position_A(get_Eb()[i]->get_Er()[j]->get_position());
-				Point position_B(get_Eb()[i]->get_Er()[j]->get_voisin()[k]->get_position());
+				Point position_A(robot->get_position());
+				Point position_B(robot->get_voisin()[k]->get_position());
 				get_robot_positionsAB(position_A, position_B);
 			}
 		}
@@ -368,7 +328,7 @@ double Simulation::compteur_resources(int base_numero){
     return get_Eb()[base_numero]->get_ressources();
 }
 
-
+//update des robots
 
 void Simulation::update_remote()
 {
@@ -404,7 +364,7 @@ void Simulation::update_remote_p(size_t i, size_t j)
 	robot->set_domaine(j);
 	if (robot->get_dp() > maxD_prosp){}  //si distance max atteinte, ne bouge plus
 	else{
-		if (robot->get_dp() > (maxD_prosp - dim_max * sqrt(2))){ //condition pour maintenance
+		if (robot->get_dp() > (maxD_prosp - dim_max * sqrt(2))){//condition maintenance
             if(!(robot->get_rt())){
                 enregistrer_ancienne_pos(robot);
             }
@@ -416,15 +376,13 @@ void Simulation::update_remote_p(size_t i, size_t j)
 			if (!(robot->get_fd())){  //si trouve rien, change son but
 				prosp_changement_but(robot);
 					
-			}else{
-				//recupère données, signal, change de but
+			}else{  //recupère données, signal, change de but	
 				signal_gisement(robot, i);
 				prosp_changement_but(robot);
 			}
 		}else{ //si pas atteint son but
 			trouve_gisement(robot, i);
-			if (robot->get_fd()){ //si trouve 
-				//recupère données, signal, continue vers son but
+			if (robot->get_fd()){ //si trouve recupère, signal, continue
 				signal_gisement(robot, i);
 			}//sinon, continue vers son but
 		}
@@ -460,7 +418,8 @@ void Simulation::update_remote_f(size_t i, size_t j)
 		if (robot->get_used()){ //si utilisé
 			sur_gisement(robot); //si le robot est sur un gisement, atteint = true
 			if (robot->get_at()){
-				if (!(robot->get_transp_envoye())) {envoyer_robot_transp(robot, i);}  //si atteint son but, indique a la base d'envoyer un robot de transport
+				//si atteint son but, indique a la base d'envoyer un robot de transport
+				if (!(robot->get_transp_envoye())) {envoyer_robot_transp(robot, i);}  
 			}
 		}else{ //si pas utilisé
 			sur_gisement(robot); //verifie si robot est sur gisement
@@ -495,7 +454,8 @@ void Simulation::update_remote_t(size_t i, size_t j)
 				donner_ressources(robot, i); //donne ressources a la base
 			}
 		}
-		if (robot->get_rt()){ //si retour == true, position but deviens le centre de la base
+		if (robot->get_rt()){
+			//si retour == true, position but deviens le centre de la base 
 			Point but(get_Eb()[i]->get_centre());
 			robot->set_position_but(but);
 		}
@@ -562,7 +522,7 @@ void Simulation::update_autonomous_p(size_t i, size_t j)
 	robot->set_ancien_connect(false);
 	if (robot->get_dp() > maxD_prosp){}  //si distance max atteinte, ne bouge plus
 	else{
-		if (robot->get_dp() > (maxD_prosp - dim_max * sqrt(2))){ //condition pour maintenance
+		if (robot->get_dp() > (maxD_prosp - dim_max * sqrt(2))){//condition maintenance
             if(!(robot->get_rt())){
                 enregistrer_ancienne_pos(robot);
             }
@@ -638,7 +598,8 @@ void Simulation::update_autonomous_t(size_t i, size_t j)
 				donner_ressources(robot, i); //donne ressources a la base
 			}
 		}
-		if (robot->get_rt()){ //si retour == true, position but deviens le centre de la base
+		if (robot->get_rt()){
+			//si retour == true, position but deviens le centre de la base 
 			Point but(get_Eb()[i]->get_centre());
 			robot->set_position_but(but);
 		}
@@ -683,7 +644,8 @@ void Simulation::move_to_dest(Robot* robot)
     robot->set_position(x, y);
     if (!(egalite(robot->get_position(), robot->get_position_but()))){
 		double dp(robot->get_dp());
-		dp = dp + sqrt(pow(((deltaD*v.x)/v.norme), 2) + pow(((deltaD*v.y)/v.norme), 2));
+		//le robot bouge de 5 en une mise a jour
+		dp = dp + sqrt(pow(((deltaD*v.x)/v.norme), 2) + pow(((deltaD*v.y)/v.norme),2));
 		robot->set_dp(dp);
 	}
 }
@@ -733,24 +695,24 @@ void Simulation::prosp_changement_but(RobotP* robot)
 	
 //fonction qui cherche si un gisement existe en la position du robot
 
-void Simulation::trouve_gisement(RobotP* robot, size_t i){
+void Simulation::trouve_gisement(RobotP* robot, size_t i)
+{
     for(size_t g(0); g < get_Eg().size(); ++g){
-        if (point_cercle(robot->get_position(), get_Eg()[g]->get_centre(), get_Eg()[g]->get_rayon())){
-			if (!(get_Eg()[g]->get_found())){
-				robot->set_fd(true);
-				get_Eg()[g]->set_found(true);
-				robot->set_position_gisement(get_Eg()[g]->get_centre().x, get_Eg()[g]->get_centre().y);
-				robot->set_rayong(get_Eg()[g]->get_rayon());
-				robot->set_capaciteg(get_Eg()[g]->get_capacite());
-			}
-        }
+		Gisement* G(&(*(get_Eg()[g])));
+        if (point_cercle(robot->get_position(), G->get_centre(), G->get_rayon())){
+			robot->set_fd(true);
+			robot->set_position_gisement(G->get_centre().x, G->get_centre().y);
+			robot->set_rayong(G->get_rayon());
+			robot->set_capaciteg(G->get_capacite());
+		}
     }
 }
 
 void Simulation::sur_gisement(RobotF* robot)
 {
 	for(size_t g(0); g < get_Eg().size(); ++g){
-		if (point_cercle(robot->get_position(),  get_Eg()[g]->get_centre(), get_Eg()[g]->get_rayon())){
+		if (point_cercle(robot->get_position(),  get_Eg()[g]->get_centre(), 
+						 get_Eg()[g]->get_rayon())){
 			if((get_Eg()[g]->get_capacite() > 0) and (!(get_Eg()[g]->get_found()))){
 				robot->set_at(true);
 				get_Eg()[g]->set_found(true);
@@ -768,7 +730,8 @@ void Simulation::signal_gisement(RobotP* robot, size_t i)
 	for (size_t j(0); j<tailleF; ++j){
 		RobotF* robotF (&(*(get_Eb()[i]->get_ErF()[j])));
 		Vect v(distanceAB(robotF->get_position(), robot->get_position_gisement()));
-		if ((v.norme <= (maxD_forage - robotF->get_dp())) and (!(robotF->get_used()))){
+		if ((v.norme <= (maxD_forage - robotF->get_dp() + robot->get_rg())) and 
+		   (!(robotF->get_used()))){
 			double xb(robot->get_position_gisement().x);
 			double yb(robot->get_position_gisement().y);
 			xb = xb - (((robot->get_rg()-10)*v.x)/v.norme);
@@ -813,23 +776,25 @@ void Simulation::forage(RobotT* robot, RobotF* robotF)
 			break;
 		}
 	}
-	if ((gisement->get_capacite()) > deltaR ){
-		robotF->set_ressources_recup(deltaR);
-		double c(gisement->get_capacite());
-		c -= deltaR;
-		gisement->set_capacite(c);
-		robot->set_ressources_transp(robotF->get_ressources_recup());
-		robotF->set_ressources_recup(0);
-	}
+	if (egalite(robot->get_position(), robotF->get_position())){
+		if ((gisement->get_capacite()) > deltaR ){
+			robotF->set_ressources_recup(deltaR);
+			double c(gisement->get_capacite());
+			c -= deltaR;
+			gisement->set_capacite(c);
+			robot->set_ressources_transp(robotF->get_ressources_recup());
+			robotF->set_ressources_recup(0);
+		}
 		
-	if (((gisement->get_capacite()) <= deltaR) and ((gisement->get_capacite()) > 0 )){
-		robotF->set_ressources_recup(gisement->get_capacite());
-		gisement->set_capacite(0);
-		robot->set_ressources_transp(robotF->get_ressources_recup());
-		robotF->set_ressources_recup(0);
-	}
-	if ((gisement->get_capacite()) == 0 ){
-		robotF->set_gisement_vide(true);
+		if (((gisement->get_capacite()) <= deltaR)and((gisement->get_capacite()) > 0)){
+			robotF->set_ressources_recup(gisement->get_capacite());
+			gisement->set_capacite(0);
+			robot->set_ressources_transp(robotF->get_ressources_recup());
+			robotF->set_ressources_recup(0);
+		}
+		if ((gisement->get_capacite()) == 0 ){
+			robotF->set_gisement_vide(true);
+		}
 	}
 }
 
@@ -856,13 +821,22 @@ void Simulation::enregistrer_ancienne_pos(RobotP* robot)
 	
 void Simulation::creation()
 {
-	size_t nb(0);
 	for (size_t i(0); i<get_Eb().size(); ++i){
+		size_t nb(0);
+		bool creation(true);
 		double ressources(get_Eb()[i]->get_ressources());
 		for(size_t j(0); j<get_Eb()[i]->get_ErP().size(); ++j){
 			RobotP* robot(&(*(get_Eb()[i]->get_ErP()[j])));
 			if (robot->get_fd()){
-				if ((ressources - (cost_forage + cost_transp)) > 0){
+				for (size_t k(0); k<get_Eb()[i]->get_ErF().size(); ++k){
+					RobotF* robotF(&(*(get_Eb()[i]->get_ErF()[k])));
+					bool intersection(point_cercle(robotF->get_position_but(), 
+									  robot->get_position_gisement(),robot->get_rg()));
+					if(intersection){
+						creation = false;
+					}
+				}
+				if ((creation) and (ressources - (cost_forage + cost_transp)) > 0){
 					if (nb <= max_robots) {creation_f(i); ++nb;}
 					if (nb <= max_robots) {creation_t(i); ++nb;}
 				}
@@ -876,7 +850,7 @@ void Simulation::creation()
 		}
 		while (nb < max_robots){
 			if (ressources - 16*cost_com > 0 ){
-				if (get_Eb()[i]->get_nb_com() < 16){
+				if (get_Eb()[i]->get_nbC() < 16){
 					creation_c(i);
 				}
 			++nb;
@@ -893,7 +867,8 @@ void Simulation::creation_p(size_t i)
 	int uid(base->get_Er().size() +1);
 	double x(base->get_centre().x);
 	double y(base->get_centre().y);
-	base->get_ErP().push_back(shared_ptr<RobotP> (new RobotP(uid, 0, x, y, x, y, 0, 0, 0, 0, 0, 0, 0)));
+	base->get_ErP().push_back(shared_ptr<RobotP> (new RobotP(uid, 0, x, y, x, y, 0, 0, 
+														     0, 0, 0, 0, 0)));
 	base->get_Er().push_back(base->get_ErP().back());
 	double ressources(base->get_ressources());
 	ressources -= cost_prosp;
@@ -925,7 +900,7 @@ void Simulation::creation_t(size_t i)
 	int uid(base->get_Er().size() +1);
 	double x(base->get_centre().x);
 	double y(base->get_centre().y);
-	base->get_ErT().push_back(shared_ptr<RobotT> (new RobotT(uid, 0, x, y, x, y, 0, 0)));
+	base->get_ErT().push_back(shared_ptr<RobotT>(new RobotT(uid, 0, x, y, x, y, 0,0)));
 	base->get_Er().push_back(base->get_ErT().back());
 	double ressources(base->get_ressources());
 	ressources -= cost_transp;
@@ -941,24 +916,19 @@ void Simulation::creation_c(size_t i)
 	int uid(base->get_Er().size() +1);
 	double x(base->get_centre().x);
 	double y(base->get_centre().y);
-	int nb_com(base->get_nb_com());	
-	cout << nb_com << " " << nb_com/4 << " " << nb_com%4 << endl;
-
+	int nb_com(base->get_nbC());	
 	
 	double xb( x +(((nb_com/4) * 2*(rayon_comm-5))));
 	double yb( y +(((nb_com%4) * 2*(rayon_comm-5))));    
 	
-	base->get_ErC().push_back(shared_ptr<RobotC> (new RobotC(uid, 0, x, y, xb, yb, 0)));
+	base->get_ErC().push_back(shared_ptr<RobotC>(new RobotC(uid, 0, x, y, xb, yb, 0)));
 	base->get_Er().push_back(base->get_ErC().back());
 	
 	double ressources(base->get_ressources());
 	ressources -= cost_com;
 	base->set_ressources(ressources);
 	++nb_com;
-	base->set_nb_com(nb_com);
-	int nbC(base->get_nbC());
-	++nbC;
-	base->set_nbC(nbC);
+	base->set_nbC(nb_com);
 }
 
 void Simulation::destruction()
@@ -989,12 +959,15 @@ bool Simulation::base_full(double ressources)
 }
 
 //Getter
+
 bool Simulation::get_file_opened() {return file_opened;}
 
 //Setter
+
 void Simulation::set_file_opened(bool etat) {file_opened = etat;}
 
-//Constructeur			
+//Constructeur
+		
 Simulation::Simulation() : file_opened(false)
 {
 	setMax(dim_max);
